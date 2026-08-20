@@ -20,8 +20,8 @@ share/
 ├── index.html        # Main HTML structure & modals
 ├── style.css         # Pure Vanilla CSS design system & animations
 ├── script.js         # ES6 JavaScript logic, modals & fluid simulation
-├── public/
-│   └── images/       # Retro cassette tape illustration assets
+├── images/           # Retro cassette tape illustration assets
+├── vercel.json       # Vercel deployment & routing configuration
 └── package.json      # Minimal static server config
 ```
 
