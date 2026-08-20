@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>shared</title>
+  <meta name="description"
+    content="Share movies. Not hassle. Download files directly with interactive WebGL fluid background.">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <!-- Google Fonts: Bebas Neue, Space Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Canvas Confetti library for download feedback -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+</head>
+
+<body>
+
+  <!-- 1. Minimal SVG Loading Screen -->
+  <div id="loader" class="loader-overlay" role="status" aria-label="Loading animation">
+    <div class="loader-content">
+      <div class="loader-spinner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="9" />
+          <circle cx="12" cy="12" r="2.5" fill="currentColor" />
+          <circle cx="8" cy="8.5" r="1.25" fill="currentColor" />
+          <circle cx="16" cy="8.5" r="1.25" fill="currentColor" />
+          <circle cx="8" cy="15.5" r="1.25" fill="currentColor" />
+          <circle cx="16" cy="15.5" r="1.25" fill="currentColor" />
+        </svg>
+      </div>
+      <div class="loader-text">
+        <span class="loader-title">REELDROP ARCHIVE</span>
+        <span class="loader-subtitle">loading content...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Interactive WebGL Fluid Simulation Background -->
+  <canvas id="fluid-canvas" aria-hidden="true"></canvas>
+
+  <!-- 3. Main Content Container -->
+  <div class="content-wrapper">
+
+    <!-- Navigation Header -->
+    <header class="site-header">
+      <div class="header-inner">
+        <!-- Logo -->
+        <div class="brand-logo" id="logo-btn" role="button" tabindex="0">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="9" />
+              <circle cx="12" cy="12" r="2.5" fill="currentColor" />
+              <circle cx="8" cy="8.5" r="1.25" fill="currentColor" />
+              <circle cx="16" cy="8.5" r="1.25" fill="currentColor" />
+              <circle cx="8" cy="15.5" r="1.25" fill="currentColor" />
+              <circle cx="16" cy="15.5" r="1.25" fill="currentColor" />
+            </svg>
+          </div>
+          <span class="logo-title">MoodFlix Share</span>
+        </div>
+      </div>
+
+      <div class="header-divider"></div>
+    </header>
+
+    <!-- Main Hero Section -->
+    <main class="site-main">
+
+      <!-- Retro Hero Section -->
+      <section class="hero-section">
+        <!-- Non-Interactive VHS Cassette Centerpiece -->
+        <div class="cassette-wrapper non-interactive">
+          <div class="halftone-circle non-interactive"></div>
+          <div class="cassette-card non-interactive">
+            <img src="public/images/hero.png" alt="Retro VHS Cassette Tape - Movie Night"
+              class="cassette-img non-interactive">
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <!-- Status Tag -->
+        <div class="status-tag">
+          <span class="status-dot"></span>
+          <span class="status-text">NEW MOVIE</span>
+        </div>
+
+        <!-- Main Headline -->
+        <h1 class="hero-headline">
+          <span>SOMEONE</span>
+          <span>SHARED A MOVIE</span>
+          <span>TO YOU</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="hero-subtitle">
+          CLICK BELOW TO DOWNLOAD THE TORRENT<br>AND START WATCHING.
+        </p>
+      </section>
+
+      <!-- Download Button Section -->
+      <section class="cta-section">
+        <button id="download-btn" class="download-cta-btn">
+          <div class="cta-icon-box">
+            <svg class="cta-download-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+          </div>
+          <div class="cta-divider"></div>
+          <div class="cta-text-box">
+            <span id="download-btn-text" class="cta-title">DOWNLOAD TORRENT</span>
+          </div>
+        </button>
+      </section>
+
+    </main>
+
+    <!-- Site Footer -->
+    <footer class="site-footer">
+      <div class="footer-divider"></div>
+      <div class="footer-inner">
+        <div class="footer-info">
+          <span class="footer-copyright">© 2025 REELDROP</span>
+          <span class="footer-tagline">SHARE MOVIES. NOT HASSLE.</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- WebGL Fluid Custom script & Main Logic -->
+  <script src="https://cdn.jsdelivr.net/npm/webgl-fluid-custom"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,467 @@
+/* ==========================================================================
+   REELDROP / MoodFlix — Minimal Clean Retro Modern CSS
+   ========================================================================== */
+
+/* Root Variables */
+:root {
+  --bg-color: #F7F5F0;
+  --text-color: #000000;
+  --border-color: #000000;
+  
+  --font-bebas: 'Bebas Neue', Impact, sans-serif;
+  --font-mono: 'Space Mono', 'Courier New', monospace;
+}
+
+/* Reset & Lock Viewport Height */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-mono);
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   1. SVG Loader Screen
+   -------------------------------------------------------------------------- */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #F5F3EC;
+  color: #141414;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+.loader-overlay.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.loader-spinner svg {
+  width: 42px;
+  height: 42px;
+  animation: spin 4s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.loader-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+.loader-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+.loader-subtitle {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #7A766E;
+  letter-spacing: 0.1em;
+}
+
+/* --------------------------------------------------------------------------
+   2. WebGL Fluid Simulation Background Canvas
+   -------------------------------------------------------------------------- */
+#fluid-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: auto;
+  filter: grayscale(100%) brightness(5000%) blur(10px) invert(100%) brightness(95%) contrast(10000%);
+  mix-blend-mode: multiply;
+}
+
+/* --------------------------------------------------------------------------
+   3. Main Content Container
+   -------------------------------------------------------------------------- */
+.content-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 430px;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  pointer-events: none;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Re-enable pointer events for interactive controls */
+.content-wrapper a,
+.content-wrapper button,
+.content-wrapper [role="button"],
+.content-wrapper .interactive {
+  pointer-events: auto;
+}
+
+/* --------------------------------------------------------------------------
+   4. Site Header
+   -------------------------------------------------------------------------- */
+.site-header {
+  position: relative;
+  width: 100%;
+  padding: clamp(14px, 2.2vh, 20px) 20px 0 20px;
+  flex-shrink: 0;
+  z-index: 30;
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+}
+.brand-logo:focus-visible {
+  outline: 2px solid var(--border-color);
+  outline-offset: 4px;
+}
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.5s ease;
+}
+.brand-logo:hover .logo-icon {
+  transform: rotate(180deg);
+}
+.logo-icon svg {
+  width: 18px;
+  height: 18px;
+}
+.logo-title {
+  font-family: var(--font-bebas);
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.header-divider {
+  width: 100%;
+  height: 1.5px;
+  background-color: var(--text-color);
+  margin-top: clamp(10px, 1.6vh, 14px);
+}
+
+/* --------------------------------------------------------------------------
+   5. Site Main Section (Harmonious Balanced Layout)
+   -------------------------------------------------------------------------- */
+.site-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  padding: clamp(10px, 1.8vh, 20px) 20px;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* Non-interactive utility */
+.non-interactive {
+  pointer-events: none !important;
+  cursor: default !important;
+  user-select: none !important;
+  -webkit-user-drag: none !important;
+}
+
+/* 5.1 Hero Section (Visual Cassette Artwork) */
+.hero-section {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: clamp(12px, 2vh, 20px);
+  transform: translateY(-5%);
+}
+
+.cassette-wrapper {
+  position: relative;
+  width: 100%;
+  height: clamp(125px, 20vh, 190px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.halftone-circle {
+  position: absolute;
+  top: 50%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  width: clamp(175px, 26vh, 245px);
+  height: clamp(175px, 26vh, 245px);
+  border-radius: 50%;
+  background-image: radial-gradient(#000000 28%, transparent 29%);
+  background-size: 5px 5px;
+  opacity: 0.85;
+  z-index: 1;
+}
+.cassette-card {
+  position: relative;
+  width: auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+.cassette-img {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.05));
+}
+
+/* 5.2 Content Section (Status Tag, Headline, Subtitle) */
+.content-section {
+  width: 100%;
+  user-select: none;
+  text-align: left;
+  margin-top: clamp(18px, 3vh, 32px);
+}
+
+.status-tag {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: clamp(6px, 1vh, 10px);
+}
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--text-color);
+  flex-shrink: 0;
+}
+.status-text {
+  font-family: var(--font-mono);
+  font-size: clamp(10px, 1.4vh, 11px);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.hero-headline {
+  font-family: var(--font-bebas);
+  font-size: clamp(38px, 5.8vh, 56px);
+  line-height: 0.92;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  margin-bottom: clamp(8px, 1.4vh, 14px);
+}
+.hero-headline span {
+  display: block;
+}
+
+.hero-subtitle {
+  font-family: var(--font-mono);
+  font-size: clamp(9.5px, 1.35vh, 11px);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  line-height: 1.45;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+/* 5.3 CTA Section (Download Button) */
+.cta-section {
+  width: 100%;
+  margin-top: clamp(16px, 2.5vh, 26px);
+}
+
+.download-cta-btn {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: clamp(10px, 1.6vh, 14px) 16px;
+  background-color: var(--bg-color);
+  border: 1.5px solid var(--border-color);
+  box-shadow: none;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+  outline: none;
+}
+.download-cta-btn:focus-visible {
+  outline: 2px solid var(--border-color);
+  outline-offset: 3px;
+}
+.download-cta-btn:hover {
+  background-color: #ffffff;
+}
+.download-cta-btn:active {
+  transform: scale(0.99);
+}
+.cta-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.cta-download-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--text-color);
+}
+.cta-divider {
+  width: 1.5px;
+  height: 20px;
+  background-color: var(--border-color);
+  margin: 0 clamp(12px, 2vw, 16px);
+  flex-shrink: 0;
+}
+.cta-text-box {
+  flex: 1;
+  text-align: center;
+}
+.cta-title {
+  font-family: var(--font-mono);
+  font-size: clamp(11px, 1.5vh, 13px);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   6. Site Footer
+   -------------------------------------------------------------------------- */
+.site-footer {
+  width: 100%;
+  padding: 0 20px clamp(12px, 2vh, 18px) 20px;
+  flex-shrink: 0;
+  z-index: 30;
+}
+.footer-divider {
+  width: 100%;
+  height: 1.5px;
+  background-color: var(--border-color);
+  margin-bottom: clamp(8px, 1.4vh, 12px);
+}
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+}
+.footer-copyright {
+  font-family: var(--font-mono);
+  font-size: clamp(9px, 1.3vh, 11px);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.footer-tagline {
+  font-family: var(--font-mono);
+  font-size: clamp(8.5px, 1.2vh, 10px);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* --------------------------------------------------------------------------
+   7. Responsive Adjustments (Short Viewports)
+   -------------------------------------------------------------------------- */
+@media (max-height: 600px) {
+  .hero-section {
+    margin-bottom: 8px;
+  }
+  .cassette-wrapper {
+    height: clamp(100px, 18vh, 140px);
+  }
+  .halftone-circle {
+    width: clamp(130px, 22vh, 170px);
+    height: clamp(130px, 22vh, 170px);
+  }
+  .content-section {
+    margin-top: 10px;
+  }
+  .hero-headline {
+    font-size: clamp(30px, 5vh, 40px);
+    margin-bottom: 6px;
+  }
+  .cta-section {
+    margin-top: 10px;
+  }
+}
+
+@media (max-height: 480px) {
+  .hero-section {
+    margin-bottom: 4px;
+  }
+  .cassette-wrapper {
+    height: 80px;
+  }
+  .halftone-circle {
+    width: 100px;
+    height: 100px;
+  }
+  .content-section {
+    margin-top: 6px;
+  }
+  .hero-headline {
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+  .cta-section {
+    margin-top: 8px;
+  }
+}

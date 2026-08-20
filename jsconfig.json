@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "preserve",
+    "lib": ["DOM", "ES2022"],
+    "checkJs": false
+  },
+  "exclude": ["node_modules"]
+}

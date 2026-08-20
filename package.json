@@ -1,0 +1,13 @@
+{
+  "name": "share",
+  "version": "1.0.0",
+  "private": true,
+  "description": "REELDROP — Retro Modern Movie Archive (Vanilla HTML/CSS/JS)",
+  "scripts": {
+    "start": "serve . -p 8080",
+    "dev": "serve . -p 8080"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  }
+}
