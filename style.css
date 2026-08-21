@@ -651,11 +651,11 @@ body {
 }
 
 .copy-symbol {
-  font-size: 1.4em;
+  font-size: 1.8em;
   line-height: 1;
   font-weight: 500;
   display: inline-block;
-  transform: translateY(-0.5px);
+  transform: translateY(1px);
 }
 
 .footer-tagline {
