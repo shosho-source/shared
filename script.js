@@ -556,16 +556,17 @@
   }
 
   if (trailerBtn) {
-    trailerBtn.addEventListener('click', function () {
+    trailerBtn.addEventListener('click', function (e) {
+      if (e) e.stopPropagation();
       if (trailerBtnText) {
-        scrambleText(trailerBtnText, 'OPENING TRAILER...', 600);
+        scrambleText(trailerBtnText, 'OPENING TRAILER...', 400);
       }
+      openTrailerModal();
       setTimeout(function () {
         if (trailerBtnText) {
           trailerBtnText.textContent = 'WATCH TRAILER';
         }
-        openTrailerModal();
-      }, 400);
+      }, 700);
     });
   }
 

@@ -337,6 +337,7 @@ body {
 .google-login-btn {
   width: 100%;
   position: relative;
+  z-index: 36;
   display: flex;
   align-items: center;
   padding: clamp(11px, 1.8vh, 15px) 16px;
@@ -345,21 +346,26 @@ body {
   box-shadow: 0 0 0 transparent;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  touch-action: manipulation;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   outline: none;
+  transform: none !important;
 }
 
 .google-login-btn:focus-visible {
   outline: 2px solid var(--border-color);
   outline-offset: 3px;
+  transform: none !important;
 }
 
 .google-login-btn:hover {
   background-color: #ffffff;
+  transform: none !important;
 }
 
 .google-login-btn:active {
   background-color: #f0f0f0;
+  transform: none !important;
 }
 
 .google-icon-box {
@@ -515,19 +521,26 @@ body {
   color: var(--text-color);
 }
 
-/* 5.3 CTA Section (Download Button) */
+/* 5.3 CTA Section (Download & Trailer Buttons) */
 .cta-section {
   width: 100%;
-  margin-top: clamp(20px, 3.5vh, 36px);
+  margin-top: clamp(16px, 2.5vh, 28px);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  transform: translateY(20%);
+  gap: 14px;
+  position: relative;
+  z-index: 35;
+  pointer-events: auto;
+}
+
+.trailer-cta-btn {
+  margin-top: 4px;
 }
 
 .download-cta-btn {
   width: 100%;
   position: relative;
+  z-index: 36;
   display: flex;
   align-items: center;
   padding: clamp(11px, 1.8vh, 15px) 16px;
@@ -536,21 +549,27 @@ body {
   box-shadow: 0 0 0 transparent;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
+  touch-action: manipulation;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   outline: none;
+  transform: none !important;
 }
 
 .download-cta-btn:focus-visible {
   outline: 2px solid var(--border-color);
   outline-offset: 3px;
+  transform: none !important;
 }
 
 .download-cta-btn:hover {
   background-color: #ffffff;
+  transform: none !important;
 }
 
 .download-cta-btn:active {
   background-color: #f0f0f0;
+  transform: none !important;
 }
 
 .cta-icon-box {
@@ -564,7 +583,7 @@ body {
   width: 18px;
   height: 18px;
   color: var(--text-color);
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: color 0.2s ease;
 }
 
 .cta-divider {
@@ -622,11 +641,22 @@ body {
 
 .footer-copyright {
   font-family: var(--font-mono);
-  font-size: clamp(9px, 1.3vh, 11px);
+  font-size: clamp(10px, 1.4vh, 11.5px);
   font-weight: 700;
   letter-spacing: 0.06em;
   white-space: nowrap;
   color: var(--text-color);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.copy-symbol {
+  font-size: 1.4em;
+  line-height: 1;
+  font-weight: 500;
+  display: inline-block;
+  transform: translateY(-0.5px);
 }
 
 .footer-tagline {
@@ -738,15 +768,18 @@ body {
   cursor: pointer;
   pointer-events: auto;
   z-index: 50;
-  transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease;
   outline: none;
   box-shadow: 2px 2px 0px var(--border-color);
+  touch-action: manipulation;
+  transform: none !important;
 }
 
-.back-link-btn:hover {
+.back-link-btn:hover,
+.back-link-btn:active {
   background-color: var(--text-color);
   color: var(--bg-color);
-  transform: translateY(-1px);
+  transform: none !important;
 }
 
 .tutorial-header {
@@ -1054,12 +1087,13 @@ body {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  z-index: 9990;
+  z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 16px;
   opacity: 1;
+  pointer-events: auto;
   transition: opacity 0.25s ease;
 }
 
@@ -1294,8 +1328,15 @@ body {
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  touch-action: manipulation;
+  transition: background-color 0.15s ease, color 0.15s ease;
   outline: none;
+  transform: none !important;
+}
+
+.modal-btn:hover,
+.modal-btn:active {
+  transform: none !important;
 }
 
 .modal-btn-secondary {

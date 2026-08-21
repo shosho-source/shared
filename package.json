@@ -4,7 +4,7 @@
   "private": true,
   "description": "MOODFLIX — Retro Modern Movie Archive (Vanilla HTML/CSS/JS)",
   "scripts": {
-    "build": "node -e \"const fs=require('fs'); fs.mkdirSync('public', {recursive:true}); ['index.html','style.css','script.js','favicon.ico'].forEach(f=>fs.existsSync(f)&&fs.copyFileSync(f,'public/'+f)); if(fs.existsSync('images')) fs.cpSync('images','public/images',{recursive:true}); console.log('Static public directory created successfully');\"",
+    "build": "node -e \"const fs=require('fs'); fs.mkdirSync('public', {recursive:true}); ['index.html','style.css','script.js','favicon.ico','favicon.svg'].forEach(f=>fs.existsSync(f)&&fs.copyFileSync(f,'public/'+f)); if(fs.existsSync('images')) fs.cpSync('images','public/images',{recursive:true}); console.log('Static public directory created successfully');\"",
     "start": "serve . -p 8080",
     "dev": "serve . -p 8080"
   },
