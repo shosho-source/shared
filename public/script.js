@@ -464,119 +464,125 @@
     });
   }
 
-  /* 5. In-Page Retro Modal & Download Action */
-  function openGDriveModal() {
-    if (gdriveModal) {
-      gdriveModal.classList.remove('hidden');
-    }
+  /* 5. Unified In-Page Retro Modal (Download, Trailer, & Tutorial) */
+  const unifiedModal = document.getElementById('unified-modal');
+  const closeUnifiedModalBtn = document.getElementById('close-unified-modal-btn');
+  const unifiedModalBackdrop = document.getElementById('unified-modal-backdrop');
 
-    // Reset iframe loader state
-    if (modalFrameLoader) {
-      modalFrameLoader.classList.remove('fade-out');
-    }
+  const tabBtnDownload = document.getElementById('tab-btn-download');
+  const tabBtnTrailer = document.getElementById('tab-btn-trailer');
+  const tabBtnTutorial = document.getElementById('tab-btn-tutorial');
 
-    if (gdriveIframe) {
-      gdriveIframe.classList.add('iframe-loading');
+  const tabPanelDownload = document.getElementById('tab-panel-download');
+  const tabPanelTrailer = document.getElementById('tab-panel-trailer');
+  const tabPanelTutorial = document.getElementById('tab-panel-tutorial');
 
-      let loaderTimeout = null;
-      function hideLoader() {
-        if (loaderTimeout) clearTimeout(loaderTimeout);
-        if (modalFrameLoader) modalFrameLoader.classList.add('fade-out');
-        if (gdriveIframe) gdriveIframe.classList.remove('iframe-loading');
-      }
+  const modalToTutorialBtn = document.getElementById('modal-to-tutorial-btn');
+  const modalTrailerToDownloadBtn = document.getElementById('modal-trailer-to-download-btn');
 
-      gdriveIframe.onload = hideLoader;
-      // Fallback timer to reveal iframe if onload event is delayed
-      loaderTimeout = setTimeout(hideLoader, 2200);
-    }
-  }
-
-  function closeGDriveModalAndGoToTutorial() {
-    if (gdriveModal) {
-      gdriveModal.classList.add('hidden');
-    }
-    showTutorialView();
-  }
-
-  if (downloadBtn) {
-    downloadBtn.addEventListener('click', function () {
-      if (downloadBtnText) {
-        scrambleText(downloadBtnText, 'INITIATING DOWNLOAD...', 800);
-      }
-
-      // Open in-page retro modal popup inside same tab
-      setTimeout(function () {
-        if (downloadBtnText) {
-          downloadBtnText.textContent = 'DOWNLOAD TORRENT';
-        }
-        openGDriveModal();
-      }, 500);
-    });
-  }
-
-  // Modal Action Event Listeners
-  if (closeModalBtn) closeModalBtn.addEventListener('click', closeGDriveModalAndGoToTutorial);
-  if (modalBackdrop) modalBackdrop.addEventListener('click', closeGDriveModalAndGoToTutorial);
-  if (proceedTutorialBtn) proceedTutorialBtn.addEventListener('click', closeGDriveModalAndGoToTutorial);
-
-  /* 6. Watch Trailer Modal Popup (Leave No Trace Official Trailer) */
   const TRAILER_YOUTUBE_URL = "https://www.youtube.com/embed/of00RzVENT8?autoplay=1&controls=1&rel=0&modestbranding=1";
 
-  function openTrailerModal() {
-    if (trailerModal) {
-      if (trailerFrameLoader) {
-        trailerFrameLoader.classList.remove('fade-out');
-      }
-      if (trailerIframe) {
+  function switchModalTab(tabName) {
+    // Hide all panels & reset active tab styles
+    if (tabPanelDownload) tabPanelDownload.classList.add('hidden');
+    if (tabPanelTrailer) tabPanelTrailer.classList.add('hidden');
+    if (tabPanelTutorial) tabPanelTutorial.classList.add('hidden');
+
+    if (tabBtnDownload) tabBtnDownload.classList.remove('active');
+    if (tabBtnTrailer) tabBtnTrailer.classList.remove('active');
+    if (tabBtnTutorial) tabBtnTutorial.classList.remove('active');
+
+    if (tabName === 'trailer') {
+      if (tabPanelTrailer) tabPanelTrailer.classList.remove('hidden');
+      if (tabBtnTrailer) tabBtnTrailer.classList.add('active');
+
+      // Load YouTube trailer iframe when active
+      if (trailerIframe && (!trailerIframe.src || trailerIframe.src === "about:blank" || trailerIframe.src === window.location.href)) {
+        if (trailerFrameLoader) trailerFrameLoader.classList.remove('fade-out');
         trailerIframe.classList.add('iframe-loading');
         trailerIframe.src = TRAILER_YOUTUBE_URL;
 
-        let trailerLoaderTimeout = null;
-        function hideTrailerLoader() {
-          if (trailerLoaderTimeout) clearTimeout(trailerLoaderTimeout);
+        let trailerTimeout = setTimeout(function () {
           if (trailerFrameLoader) trailerFrameLoader.classList.add('fade-out');
           if (trailerIframe) trailerIframe.classList.remove('iframe-loading');
-        }
+        }, 1500);
 
-        trailerIframe.onload = hideTrailerLoader;
-        // Fallback timer to reveal iframe if onload event is delayed
-        trailerLoaderTimeout = setTimeout(hideTrailerLoader, 2000);
+        trailerIframe.onload = function () {
+          clearTimeout(trailerTimeout);
+          if (trailerFrameLoader) trailerFrameLoader.classList.add('fade-out');
+          if (trailerIframe) trailerIframe.classList.remove('iframe-loading');
+        };
       }
-      trailerModal.classList.remove('hidden');
+    } else if (tabName === 'tutorial') {
+      if (tabPanelTutorial) tabPanelTutorial.classList.remove('hidden');
+      if (tabBtnTutorial) tabBtnTutorial.classList.add('active');
+    } else {
+      // Default: 'download'
+      if (tabPanelDownload) tabPanelDownload.classList.remove('hidden');
+      if (tabBtnDownload) tabBtnDownload.classList.add('active');
     }
   }
 
-  function closeTrailerModal() {
-    if (trailerModal) {
-      trailerModal.classList.add('hidden');
+  function openUnifiedModal(defaultTab) {
+    if (unifiedModal) {
+      unifiedModal.classList.remove('hidden');
     }
+    switchModalTab(defaultTab || 'download');
+
+    // Trigger drive iframe loader animation
+    if (gdriveIframe) {
+      let loaderTimeout = setTimeout(function () {
+        if (modalFrameLoader) modalFrameLoader.classList.add('fade-out');
+        if (gdriveIframe) gdriveIframe.classList.remove('iframe-loading');
+      }, 1500);
+      gdriveIframe.onload = function () {
+        clearTimeout(loaderTimeout);
+        if (modalFrameLoader) modalFrameLoader.classList.add('fade-out');
+        if (gdriveIframe) gdriveIframe.classList.remove('iframe-loading');
+      };
+    }
+  }
+
+  function closeUnifiedModal() {
+    if (unifiedModal) {
+      unifiedModal.classList.add('hidden');
+    }
+    // Stop YouTube video playback on modal close
     if (trailerIframe) {
       trailerIframe.src = "";
     }
   }
 
-  if (trailerBtn) {
-    trailerBtn.addEventListener('click', function (e) {
-      if (e) e.stopPropagation();
-      if (trailerBtnText) {
-        scrambleText(trailerBtnText, 'OPENING TRAILER...', 400);
-      }
-      openTrailerModal();
+  // Event Listeners for Tab Switching
+  if (tabBtnDownload) tabBtnDownload.addEventListener('click', () => switchModalTab('download'));
+  if (tabBtnTrailer) tabBtnTrailer.addEventListener('click', () => switchModalTab('trailer'));
+  if (tabBtnTutorial) tabBtnTutorial.addEventListener('click', () => switchModalTab('tutorial'));
+
+  if (modalToTutorialBtn) modalToTutorialBtn.addEventListener('click', () => switchModalTab('tutorial'));
+  if (modalTrailerToDownloadBtn) modalTrailerToDownloadBtn.addEventListener('click', () => switchModalTab('download'));
+
+  if (closeUnifiedModalBtn) closeUnifiedModalBtn.addEventListener('click', closeUnifiedModal);
+  if (unifiedModalBackdrop) unifiedModalBackdrop.addEventListener('click', closeUnifiedModal);
+
+  // Main Page Action Triggers
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', function () {
+      if (downloadBtnText) scrambleText(downloadBtnText, 'OPENING DOWNLOAD...', 400);
+      openUnifiedModal('download');
       setTimeout(function () {
-        if (trailerBtnText) {
-          trailerBtnText.textContent = 'WATCH TRAILER';
-        }
-      }, 700);
+        if (downloadBtnText) downloadBtnText.textContent = 'DOWNLOAD TORRENT';
+      }, 600);
     });
   }
 
-  if (closeTrailerModalBtn) closeTrailerModalBtn.addEventListener('click', closeTrailerModal);
-  if (trailerModalBackdrop) trailerModalBackdrop.addEventListener('click', closeTrailerModal);
-  if (closeTrailerBtnBottom) closeTrailerBtnBottom.addEventListener('click', closeTrailerModal);
-
-  if (backToDownloadBtn) {
-    backToDownloadBtn.addEventListener('click', function () {
-      showDownloadView();
+  if (trailerBtn) {
+    trailerBtn.addEventListener('click', function (e) {
+      if (e) e.stopPropagation();
+      if (trailerBtnText) scrambleText(trailerBtnText, 'OPENING TRAILER...', 400);
+      openUnifiedModal('trailer');
+      setTimeout(function () {
+        if (trailerBtnText) trailerBtnText.textContent = 'WATCH TRAILER';
+      }, 600);
     });
   }
 
