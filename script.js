@@ -6,7 +6,7 @@
   'use strict';
 
   // Target Google Drive Download URL
-  const googleDriveDownloadUrl = "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/view?usp=sharing";
+  const googleDriveDownloadUrl = "https://drive.google.com/file/d/1Rm2fKtTlNSowmuR-RE6mkI9M5l3ZBF-P/view?usp=sharing";
 
   // DOM Element References
   const loader = document.getElementById('loader');
@@ -20,37 +20,45 @@
      -------------------------------------------------------------------------- */
   function hideLoader() {
     if (loader && !loader.classList.contains('fade-out')) {
-      loader.classList.add('fade-out');
+      requestAnimationFrame(function () {
+        loader.classList.add('fade-out');
+      });
     }
   }
 
   if (document.readyState === 'complete') {
-    setTimeout(hideLoader, 300);
+    setTimeout(hideLoader, 150);
   } else {
     window.addEventListener('load', function () {
-      setTimeout(hideLoader, 500);
-    });
-    // Fallback in case window load event already fired or is delayed
-    setTimeout(hideLoader, 2000);
+      setTimeout(hideLoader, 200);
+    }, { once: true, passive: true });
+    // Safety fallback
+    setTimeout(hideLoader, 1200);
   }
 
   /* --------------------------------------------------------------------------
-     2. WebGL Fluid Background Initialization
+     2. WebGL Fluid Background Initialization (Device-Aware & Optimized)
      -------------------------------------------------------------------------- */
+  let fluidInstance = null;
+
   function initFluid() {
     if (!fluidCanvas || !window.WebGLFluidCustom) return;
 
     try {
-      window.WebGLFluidCustom(fluidCanvas, {
+      const isMobile = window.innerWidth < 768 || (navigator.maxTouchPoints && navigator.maxTouchPoints > 1);
+      const simRes = isMobile ? 64 : 128;
+      const dyeRes = isMobile ? 512 : 1024;
+
+      fluidInstance = window.WebGLFluidCustom(fluidCanvas, {
         IMMEDIATE: true,
         TRIGGER: 'hover',
-        SIM_RESOLUTION: 128,
-        DYE_RESOLUTION: 1024,
+        SIM_RESOLUTION: simRes,
+        DYE_RESOLUTION: dyeRes,
         CAPTURE_RESOLUTION: 512,
         DENSITY_DISSIPATION: 3.0,
         VELOCITY_DISSIPATION: 0.9,
         PRESSURE: 0.8,
-        PRESSURE_ITERATIONS: 10,
+        PRESSURE_ITERATIONS: 8,
         CURL: 35,
         SPLAT_RADIUS: 0.1,
         SPLAT_FORCE: 1200,
@@ -65,7 +73,7 @@
       });
 
       // Initial subtle gesture trigger
-      setTimeout(function () {
+      requestAnimationFrame(function () {
         const rect = fluidCanvas.getBoundingClientRect();
         window.dispatchEvent(
           new MouseEvent('mousemove', {
@@ -74,7 +82,7 @@
             bubbles: true,
           })
         );
-      }, 300);
+      });
     } catch (e) {
       console.warn('Fluid simulation init note:', e);
     }
@@ -83,10 +91,19 @@
   if (window.WebGLFluidCustom) {
     initFluid();
   } else {
-    window.addEventListener('DOMContentLoaded', function () {
-      setTimeout(initFluid, 400);
-    });
+    window.addEventListener('DOMContentLoaded', initFluid, { once: true, passive: true });
   }
+
+  // Optimize background tab resources
+  document.addEventListener('visibilitychange', function () {
+    if (fluidInstance && typeof fluidInstance.pause === 'function') {
+      if (document.hidden) {
+        fluidInstance.pause();
+      } else {
+        fluidInstance.resume();
+      }
+    }
+  }, { passive: true });
 
   /* --------------------------------------------------------------------------
      3. Navigation Logo Interaction (Click & Keyboard)

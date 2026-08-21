@@ -9,17 +9,21 @@
     content="Share movies. Not hassle. Download files directly with interactive WebGL fluid background.">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
 
-  <!-- Google Fonts: Bebas Neue, Space Mono -->
+  <!-- Resource Hints & Preconnects -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  <!-- Critical Asset Preload -->
+  <link rel="preload" as="image" href="images/hero.webp" type="image/webp" fetchpriority="high">
+
+  <!-- Google Fonts: Bebas Neue, Space Mono -->
   <link
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
     rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
-
-  <!-- Canvas Confetti library for download feedback -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
 </head>
 
 <body>
@@ -55,16 +59,6 @@
       <div class="header-inner">
         <!-- Logo -->
         <div class="brand-logo" id="logo-btn" role="button" tabindex="0">
-          <div class="logo-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-              <circle cx="12" cy="12" r="9" />
-              <circle cx="12" cy="12" r="2.5" fill="currentColor" />
-              <circle cx="8" cy="8.5" r="1.25" fill="currentColor" />
-              <circle cx="16" cy="8.5" r="1.25" fill="currentColor" />
-              <circle cx="8" cy="15.5" r="1.25" fill="currentColor" />
-              <circle cx="16" cy="15.5" r="1.25" fill="currentColor" />
-            </svg>
-          </div>
           <span class="logo-title">MoodFlix Share</span>
         </div>
       </div>
@@ -81,8 +75,12 @@
         <div class="cassette-wrapper non-interactive">
           <div class="halftone-circle non-interactive"></div>
           <div class="cassette-card non-interactive">
-            <img src="images/hero.png" alt="Retro VHS Cassette Tape - Movie Night"
-              class="cassette-img non-interactive">
+            <picture class="cassette-picture non-interactive">
+              <source srcset="images/hero.webp" type="image/webp">
+              <img src="images/hero.png" alt="Retro VHS Cassette Tape - Movie Night"
+                class="cassette-img non-interactive" width="900" height="600"
+                fetchpriority="high" decoding="async" loading="eager">
+            </picture>
           </div>
         </div>
       </section>
@@ -140,9 +138,10 @@
 
   </div>
 
-  <!-- WebGL Fluid Custom script & Main Logic -->
-  <script src="https://cdn.jsdelivr.net/npm/webgl-fluid-custom"></script>
-  <script src="script.js"></script>
+  <!-- Deferred Scripts: Canvas Confetti, WebGL Fluid Simulation, and Main Logic -->
+  <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/webgl-fluid-custom"></script>
+  <script defer src="script.js"></script>
 </body>
 
 </html>

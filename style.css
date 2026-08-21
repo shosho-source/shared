@@ -65,6 +65,8 @@ body {
   width: 42px;
   height: 42px;
   animation: spin 4s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 @keyframes spin {
@@ -110,6 +112,10 @@ body {
   height: 100vh;
   z-index: 1;
   pointer-events: auto;
+  contain: strict;
+  will-change: contents;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
   filter: grayscale(100%) brightness(5000%) blur(10px) invert(100%) brightness(95%) contrast(10000%);
   mix-blend-mode: multiply;
 }
@@ -130,6 +136,7 @@ body {
   justify-content: space-between;
   pointer-events: none;
   isolation: isolate;
+  contain: layout style;
   overflow: hidden;
 }
 
@@ -161,7 +168,6 @@ body {
 .brand-logo {
   display: flex;
   align-items: center;
-  gap: 10px;
   cursor: pointer;
   user-select: none;
   outline: none;
@@ -172,38 +178,19 @@ body {
   outline-offset: 4px;
 }
 
-.logo-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: var(--text-color);
-  color: var(--bg-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.5s ease;
-}
-
-.brand-logo:hover .logo-icon {
-  transform: rotate(180deg);
-}
-
-.logo-icon svg {
-  width: 18px;
-  height: 18px;
-}
-
 .logo-title {
-  font-family: var(--font-bebas);
-  font-size: 26px;
-  font-weight: 400;
-  letter-spacing: 0.05em;
+  font-family: var(--font-mono);
+  font-size: clamp(19px, 2.8vh, 23px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: none;
   line-height: 1;
 }
 
 .header-divider {
   width: 100%;
-  height: 1.5px;
+  margin-left: 0;
+  height: 1px;
   background-color: var(--text-color);
   margin-top: clamp(10px, 1.6vh, 14px);
 }
@@ -272,6 +259,14 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 2;
+}
+
+.cassette-picture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: auto;
 }
 
 .cassette-img {
@@ -353,10 +348,10 @@ body {
   padding: clamp(10px, 1.6vh, 14px) 16px;
   background-color: var(--bg-color);
   border: 1.5px solid var(--border-color);
-  box-shadow: none;
+  box-shadow: 0 0 0 transparent;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.15s ease, transform 0.1s ease;
+  transition: background-color 0.2s ease, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   outline: none;
 }
 
@@ -367,10 +362,17 @@ body {
 
 .download-cta-btn:hover {
   background-color: #ffffff;
+  box-shadow: 3px 3px 0px var(--border-color);
+  transform: translate(-1.5px, -1.5px);
+}
+
+.download-cta-btn:hover .cta-download-icon {
+  transform: translateY(2px);
 }
 
 .download-cta-btn:active {
-  transform: scale(0.99);
+  box-shadow: 0px 0px 0px var(--border-color);
+  transform: translate(1px, 1px);
 }
 
 .cta-icon-box {
@@ -384,6 +386,7 @@ body {
   width: 18px;
   height: 18px;
   color: var(--text-color);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cta-divider {
