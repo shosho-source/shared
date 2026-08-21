@@ -4,7 +4,6 @@
   "private": true,
   "description": "REELDROP — Retro Modern Movie Archive (Vanilla HTML/CSS/JS)",
   "scripts": {
-    "build": "echo 'Static build ready'",
     "start": "serve . -p 8080",
     "dev": "serve . -p 8080"
   },

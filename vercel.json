@@ -1,7 +1,8 @@
 {
   "version": 2,
   "framework": null,
-  "outputDirectory": ".",
+  "buildCommand": null,
+  "outputDirectory": null,
   "cleanUrls": true,
   "headers": [
     {
