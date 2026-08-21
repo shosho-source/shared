@@ -381,6 +381,19 @@
       scrambleText(loginBtnText, 'LOGGING IN...', 400);
     }
 
+    // Attempt real Google OAuth if a valid Supabase key is provided
+    if (supabaseClient && !SUPABASE_KEY.includes('example_anon_key') && window.location.protocol.startsWith('http')) {
+      try {
+        const { error } = await supabaseClient.auth.signInWithOAuth({
+          provider: 'google',
+          options: { redirectTo: window.location.origin }
+        });
+        if (!error) return; // Browser will redirect to Google
+      } catch (e) {
+        console.warn('Supabase OAuth failed, using local demo fallback:', e);
+      }
+    }
+
     // Direct navigation to next page (Download View) for demo/testing mode
     const testUser = { email: 'tester@google.com', name: 'Test User' };
     try {

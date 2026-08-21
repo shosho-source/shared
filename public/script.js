@@ -48,8 +48,8 @@
   const tutorialBtnText = document.getElementById('tutorial-btn-text');
 
   // Supabase Configuration (Use Anon Public Key, never Service Role Key)
-  const SUPABASE_URL = "https://qtrbwgglmqydfpnwupkm.supabase.co";
-  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0cmJ3Z2dsbXF5ZGZwbnd1cGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ2OTU4MzEsImV4cCI6MjEwMDI3MTgzMX0.example_anon_key";
+  const SUPABASE_URL = "test_url";
+  const SUPABASE_KEY = "test_key";
   let supabaseClient = null;
 
   try {
@@ -379,6 +379,19 @@
   async function handleGoogleLogin() {
     if (loginBtnText) {
       scrambleText(loginBtnText, 'LOGGING IN...', 400);
+    }
+
+    // Attempt real Google OAuth if a valid Supabase key is provided
+    if (supabaseClient && !SUPABASE_KEY.includes('example_anon_key') && window.location.protocol.startsWith('http')) {
+      try {
+        const { error } = await supabaseClient.auth.signInWithOAuth({
+          provider: 'google',
+          options: { redirectTo: window.location.origin }
+        });
+        if (!error) return; // Browser will redirect to Google
+      } catch (e) {
+        console.warn('Supabase OAuth failed, using local demo fallback:', e);
+      }
     }
 
     // Direct navigation to next page (Download View) for demo/testing mode
