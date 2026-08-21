@@ -1,6 +1,5 @@
-/* ==========================================================================
-   MOODFLIX — Minimal Clean Retro Modern CSS
-   ========================================================================== */
+/* MOODFLIX — Minimal Clean Retro Modern CSS */
+
 
 /* Root Variables */
 :root {
@@ -32,9 +31,7 @@ body {
   overflow: hidden;
 }
 
-/* --------------------------------------------------------------------------
-   1. SVG Loader Screen
-   -------------------------------------------------------------------------- */
+/* 1. SVG Loader Screen */
 .loader-overlay {
   position: fixed;
   inset: 0;
@@ -102,9 +99,7 @@ body {
   letter-spacing: 0.1em;
 }
 
-/* --------------------------------------------------------------------------
-   2. WebGL Fluid Simulation Background Canvas
-   -------------------------------------------------------------------------- */
+/* 2. WebGL Fluid Simulation Background Canvas */
 #fluid-canvas {
   position: fixed;
   top: 0;
@@ -121,9 +116,7 @@ body {
   mix-blend-mode: multiply;
 }
 
-/* --------------------------------------------------------------------------
-   3. Main Content Container
-   -------------------------------------------------------------------------- */
+/* 3. Main Content Container */
 .content-wrapper {
   position: relative;
   z-index: 10;
@@ -149,9 +142,7 @@ body {
   pointer-events: auto;
 }
 
-/* --------------------------------------------------------------------------
-   4. Site Header
-   -------------------------------------------------------------------------- */
+/* 4. Site Header */
 .site-header {
   position: relative;
   width: 100%;
@@ -239,9 +230,7 @@ body {
   margin-top: clamp(10px, 1.6vh, 14px);
 }
 
-/* --------------------------------------------------------------------------
-   5. Site Main Section (Harmonious Balanced Layout & View Transitions)
-   -------------------------------------------------------------------------- */
+/* 5. Site Main Section (Harmonious Balanced Layout & View Transitions) */
 .site-main {
   flex: 1;
   display: flex;
@@ -602,9 +591,7 @@ body {
   color: var(--text-color);
 }
 
-/* --------------------------------------------------------------------------
-   6. Site Footer
-   -------------------------------------------------------------------------- */
+/* 6. Site Footer */
 .site-footer {
   width: 100%;
   padding: 0 20px clamp(12px, 2vh, 18px) 20px;
@@ -652,9 +639,7 @@ body {
   color: var(--text-color);
 }
 
-/* --------------------------------------------------------------------------
-   7. Responsive Adjustments (Short Viewports)
-   -------------------------------------------------------------------------- */
+/* 7. Responsive Adjustments (Short Viewports) */
 @media (max-height: 600px) {
   .hero-section {
     margin-bottom: 8px;
@@ -711,9 +696,7 @@ body {
   }
 }
 
-/* --------------------------------------------------------------------------
-   8. View C: Tutorial Page Styling
-   -------------------------------------------------------------------------- */
+/* 8. View C: Tutorial Page Styling */
 #tutorial-view {
   width: 100%;
   height: auto;
@@ -1067,9 +1050,7 @@ body {
   margin-left: 2px;
 }
 
-/* --------------------------------------------------------------------------
-   9. In-Page Retro Modal Popup Styling
-   -------------------------------------------------------------------------- */
+/* 9. In-Page Retro Modal Popup Styling */
 .modal-overlay {
   position: fixed;
   inset: 0;

@@ -1,6 +1,5 @@
-/* ==========================================================================
-   MOODFLIX — Minimal JavaScript Logic & WebGL Fluid Simulation
-   ========================================================================== */
+/* MOODFLIX — Minimal JavaScript Logic & WebGL Fluid Simulation */
+
 
 (function () {
   'use strict';
@@ -57,9 +56,7 @@
     console.warn('Supabase init note:', e);
   }
 
-  /* --------------------------------------------------------------------------
-     1. Loader Screen Timer & Safety Fallback
-     -------------------------------------------------------------------------- */
+  /* 1. Loader Screen Timer & Safety Fallback */
   function hideLoader() {
     if (loader && !loader.classList.contains('fade-out')) {
       requestAnimationFrame(function () {
@@ -78,9 +75,7 @@
     setTimeout(hideLoader, 1200);
   }
 
-  /* --------------------------------------------------------------------------
-     2. WebGL Fluid Background Initialization (Device-Aware & Optimized)
-     -------------------------------------------------------------------------- */
+  /* 2. WebGL Fluid Background Initialization (Device-Aware & Optimized) */
   let fluidInstance = null;
 
   function initFluid() {
@@ -147,9 +142,7 @@
     }
   }, { passive: true });
 
-  /* --------------------------------------------------------------------------
-     Universal Text Scramble System (Auto-resolves within 1 second)
-     -------------------------------------------------------------------------- */
+  /* Universal Text Scramble System (Auto-resolves within 1 second) */
   const scrambleChars = '!@#$%^&*()_+-=[]{}|;:,.<>?/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   function scrambleText(element, targetText, duration) {
@@ -286,9 +279,7 @@
     });
   }
 
-  /* --------------------------------------------------------------------------
-     3. Authentication & View State Logic (Google Log In -> Download -> Tutorial)
-     -------------------------------------------------------------------------- */
+  /* 3. Authentication & View State Logic (Google Log In -> Download -> Tutorial) */
   function resetScroll() {
     const mainContainer = document.querySelector('.site-main');
     if (mainContainer) mainContainer.scrollTop = 0;
@@ -458,9 +449,7 @@
     window.addEventListener('DOMContentLoaded', checkSession, { once: true, passive: true });
   }
 
-  /* --------------------------------------------------------------------------
-     4. Navigation Logo Interaction (Click & Keyboard)
-     -------------------------------------------------------------------------- */
+  /* 4. Navigation Logo Interaction (Click & Keyboard) */
   function handleLogoClick() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -475,9 +464,7 @@
     });
   }
 
-  /* --------------------------------------------------------------------------
-     5. In-Page Retro Modal & Download Action
-     -------------------------------------------------------------------------- */
+  /* 5. In-Page Retro Modal & Download Action */
   function openGDriveModal() {
     if (gdriveModal) {
       gdriveModal.classList.remove('hidden');
@@ -532,9 +519,7 @@
   if (modalBackdrop) modalBackdrop.addEventListener('click', closeGDriveModalAndGoToTutorial);
   if (proceedTutorialBtn) proceedTutorialBtn.addEventListener('click', closeGDriveModalAndGoToTutorial);
 
-  /* --------------------------------------------------------------------------
-     6. Watch Trailer Modal Popup (Leave No Trace Official Trailer)
-     -------------------------------------------------------------------------- */
+  /* 6. Watch Trailer Modal Popup (Leave No Trace Official Trailer) */
   const TRAILER_YOUTUBE_URL = "https://www.youtube.com/embed/of00RzVENT8?autoplay=1&controls=1&rel=0&modestbranding=1";
 
   function openTrailerModal() {
