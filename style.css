@@ -655,7 +655,7 @@ body {
   line-height: 1;
   font-weight: 500;
   display: inline-block;
-  transform: translateY(1px);
+  transform: translateY(3px);
 }
 
 .footer-tagline {
