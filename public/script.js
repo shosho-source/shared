@@ -358,19 +358,7 @@
       }
     }
 
-    // 2. Check local fallback session
-    try {
-      const cached = localStorage.getItem('moodflix_auth_user');
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (parsed && parsed.email) {
-          showDownloadView(parsed);
-          return;
-        }
-      }
-    } catch (e) {
-      // LocalStorage fallback
-    }
+
 
     // 3. Default to Google Log In page
     showAuthView();
@@ -381,28 +369,23 @@
       scrambleText(loginBtnText, 'LOGGING IN...', 400);
     }
 
-    // Attempt real Google OAuth if a valid Supabase key is provided
-    if (supabaseClient && !SUPABASE_KEY.includes('example_anon_key') && window.location.protocol.startsWith('http')) {
-      try {
-        const { error } = await supabaseClient.auth.signInWithOAuth({
-          provider: 'google',
-          options: { redirectTo: window.location.origin }
-        });
-        if (!error) return; // Browser will redirect to Google
-      } catch (e) {
-        console.warn('Supabase OAuth failed, using local demo fallback:', e);
-      }
+    if (!supabaseClient || SUPABASE_KEY.includes('example_anon_key')) {
+      alert("Google Login is currently unavailable. Please configure Supabase API keys.");
+      if (loginBtnText) loginBtnText.textContent = 'CONTINUE WITH GOOGLE';
+      return;
     }
 
-    // Direct navigation to next page (Download View) for demo/testing mode
-    const testUser = { email: 'tester@google.com', name: 'Test User' };
     try {
-      localStorage.setItem('moodflix_auth_user', JSON.stringify(testUser));
-    } catch (e) {}
-
-    setTimeout(function () {
-      showDownloadView(testUser);
-    }, 300);
+      const { error } = await supabaseClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin }
+      });
+      if (error) throw error;
+    } catch (e) {
+      console.warn('Supabase OAuth failed:', e);
+      alert("Failed to connect to Google Auth.");
+      if (loginBtnText) loginBtnText.textContent = 'CONTINUE WITH GOOGLE';
+    }
   }
 
   async function handleSignOut() {
@@ -411,9 +394,6 @@
         await supabaseClient.auth.signOut();
       } catch (e) {}
     }
-    try {
-      localStorage.removeItem('moodflix_auth_user');
-    } catch (e) {}
     showAuthView();
   }
 
