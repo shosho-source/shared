@@ -270,6 +270,7 @@ body {
 
 .view-container {
   width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -296,7 +297,7 @@ body {
 
 #auth-view,
 #download-view {
-  padding-top: clamp(32px, 8vh, 60px);
+  padding-top: clamp(10px, 4vh, 40px);
 }
 
 #auth-view .status-text,
@@ -408,8 +409,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: clamp(12px, 2vh, 20px);
-  transform: translateY(25%);
+  margin-bottom: clamp(8px, 1.5vh, 16px);
 }
 
 .cassette-wrapper {
@@ -467,8 +467,7 @@ body {
   width: 100%;
   user-select: none;
   text-align: left;
-  margin-top: clamp(32px, 5vh, 52px);
-  transform: translateY(20%);
+  margin-top: clamp(16px, 3vh, 32px);
 }
 
 .status-tag {
@@ -524,7 +523,7 @@ body {
 /* 5.3 CTA Section (Download & Trailer Buttons) */
 .cta-section {
   width: 100%;
-  margin-top: clamp(38px, 6vh, 60px);
+  margin-top: clamp(20px, 4vh, 40px);
   display: flex;
   flex-direction: column;
   gap: 12px;

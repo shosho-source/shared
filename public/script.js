@@ -48,8 +48,8 @@
   const tutorialBtnText = document.getElementById('tutorial-btn-text');
 
   // Supabase Configuration (Use Anon Public Key, never Service Role Key)
-  const SUPABASE_URL = "test_url";
-  const SUPABASE_KEY = "test_key";
+  const SUPABASE_URL = "https://qtrbwgglmqydfpnwupkm.supabase.co";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0cmJ3Z2dsbXF5ZGZwbnd1cGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ2OTU4MzEsImV4cCI6MjEwMDI3MTgzMX0.example_anon_key";
   let supabaseClient = null;
 
   try {
