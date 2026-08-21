@@ -305,6 +305,9 @@
       const logKey = 'logged_in_recorded_' + (user.id || user.email || 'user');
       if (sessionStorage.getItem(logKey)) return;
 
+      // Set immediately to prevent race conditions from concurrent auth events
+      sessionStorage.setItem(logKey, 'true');
+
       await supabaseClient.from('login_logs').insert([
         {
           user_id: user.id || null,
@@ -312,9 +315,8 @@
           user_agent: navigator.userAgent
         }
       ]);
-
-      sessionStorage.setItem(logKey, 'true');
     } catch (e) {
+      sessionStorage.removeItem('logged_in_recorded_' + (user.id || user.email || 'user'));
       console.warn('Could not record login log:', e);
     }
   }
@@ -592,9 +594,19 @@
 
   // Tutorial Back Navigation
   if (backToDownloadBtn) {
-    backToDownloadBtn.addEventListener('click', function () {
-      const cached = localStorage.getItem('moodflix_auth_user');
-      showDownloadView(cached ? JSON.parse(cached) : null);
+    backToDownloadBtn.addEventListener('click', async function () {
+      let user = null;
+      if (supabaseClient) {
+        try {
+          const { data } = await supabaseClient.auth.getSession();
+          if (data && data.session && data.session.user) {
+            user = data.session.user;
+          }
+        } catch (e) {
+          console.warn('Could not get session for back navigation:', e);
+        }
+      }
+      showDownloadView(user);
     });
   }
 
