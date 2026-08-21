@@ -4,17 +4,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>shared</title>
+  <title>MOODFLIX — Retro Movie Share &amp; Torrent Archive</title>
   <meta name="description"
     content="Share movies. Not hassle. Download files directly with interactive WebGL fluid background.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="alternate icon" href="favicon.ico" type="image/x-icon">
 
   <!-- Resource Hints & Preconnects -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://drive.google.com">
+  <link rel="preconnect" href="https://www.youtube.com">
   <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+  <link rel="dns-prefetch" href="https://drive.google.com">
+  <link rel="dns-prefetch" href="https://www.youtube.com">
+  <link rel="prefetch" href="https://drive.google.com/file/d/1Rm2fKtTlNSowmuR-RE6mkI9M5l3ZBF-P/preview">
+  <link rel="prefetch" href="https://www.youtube.com/embed/of00RzVENT8">
 
   <!-- Critical Asset Preload -->
   <link rel="preload" as="image" href="images/hero.webp" type="image/webp" fetchpriority="high">
@@ -66,6 +71,7 @@
         <!-- User Profile (Visible when Authenticated) -->
         <div id="user-profile" class="user-profile hidden">
           <span id="user-email" class="user-email"></span>
+          <button id="signout-btn" class="signout-btn" title="Sign Out">LOGOUT</button>
         </div>
       </div>
 
@@ -480,248 +486,116 @@
 
   </div>
 
-  <!-- Unified In-Page Retro Modal Popup (Download, Trailer, & Tutorial) -->
-  <div id="unified-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="unified-modal-title">
-    <div class="modal-backdrop" id="unified-modal-backdrop"></div>
+  <!-- Separate Download Pop-up Modal -->
+  <div id="download-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="download-modal-title">
+    <div class="modal-backdrop" id="download-modal-backdrop"></div>
     <div class="modal-card modal-window retro-box">
-      
       <!-- Modal Header -->
       <div class="modal-header">
         <div class="modal-title-box">
           <span class="modal-dot"></span>
-          <span id="unified-modal-title" class="modal-title">MOODFLIX ARCHIVE PREVIEW</span>
+          <span id="download-modal-title" class="modal-title">DOWNLOAD TORRENT ARCHIVE</span>
         </div>
-        <button id="close-unified-modal-btn" class="modal-close-btn" aria-label="Close modal">✕</button>
-      </div>
-
-      <!-- Navigation Tab Bar -->
-      <div class="modal-tabs">
-        <button id="tab-btn-download" class="modal-tab-btn active" data-tab="download">
-          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <polyline points="7 10 12 15 17 10" />
-            <line x1="12" y1="15" x2="12" y2="3" />
-          </svg>
-          <span>DOWNLOAD</span>
-        </button>
-
-        <button id="tab-btn-trailer" class="modal-tab-btn" data-tab="trailer">
-          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor">
-            <polygon points="5 3 19 12 5 21 5 3" />
-          </svg>
-          <span>TRAILER</span>
-        </button>
-
-        <button id="tab-btn-tutorial" class="modal-tab-btn" data-tab="tutorial">
-          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2">
-            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-          </svg>
-          <span>TUTORIAL</span>
-        </button>
+        <button id="close-download-modal-btn" class="modal-close-btn" aria-label="Close download modal">✕</button>
       </div>
 
       <div class="modal-divider"></div>
 
       <!-- Modal Body Container -->
-      <div class="modal-body scrollable-modal-body">
+      <div class="modal-body">
+        <div class="modal-file-info">
+          <svg class="modal-file-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+            <polyline points="2 17 12 22 22 17" />
+            <polyline points="2 12 12 17 22 12" />
+          </svg>
+          <div class="modal-file-text">
+            <span class="modal-filename">MOODFLIX_MOVIE_ARCHIVE.TORRENT</span>
+            <span class="modal-filesize">READY FOR DOWNLOAD • SECURE FILE</span>
+          </div>
+        </div>
 
-        <!-- TAB PANEL 1: DOWNLOAD FILE PREVIEW -->
-        <div id="tab-panel-download" class="modal-tab-panel">
-          <div class="modal-file-info">
-            <svg class="modal-file-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-              <polygon points="12 2 2 7 12 12 22 7 12 2" />
-              <polyline points="2 17 12 22 22 17" />
-              <polyline points="2 12 12 17 22 12" />
+        <div class="modal-frame-container">
+          <div id="download-frame-loader" class="modal-frame-loader">
+            <svg class="modal-spinner-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="12" cy="12" r="9" stroke-dasharray="36" stroke-dashoffset="12" />
+              <circle cx="12" cy="12" r="2.5" fill="currentColor" />
             </svg>
-            <div class="modal-file-text">
-              <span class="modal-filename">MOODFLIX_MOVIE_ARCHIVE.TORRENT</span>
-              <span class="modal-filesize">READY FOR DOWNLOAD • SECURE FILE</span>
+            <span id="download-loader-text" class="modal-loader-text">FETCHING SECURE DOWNLOAD LINK...</span>
+            <div class="modal-progress-bar">
+              <div class="modal-progress-fill"></div>
             </div>
           </div>
-
-          <div class="modal-frame-container">
-            <div id="modal-frame-loader" class="modal-frame-loader">
-              <svg class="modal-spinner-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <circle cx="12" cy="12" r="9" stroke-dasharray="36" stroke-dashoffset="12" />
-                <circle cx="12" cy="12" r="2.5" fill="currentColor" />
-              </svg>
-              <span class="modal-loader-text">LOADING DRIVE PREVIEW...</span>
-            </div>
-            <iframe id="gdrive-iframe" src="https://drive.google.com/file/d/1Rm2fKtTlNSowmuR-RE6mkI9M5l3ZBF-P/preview"
-              class="gdrive-iframe iframe-loading" title="Google Drive File Preview"></iframe>
-          </div>
-
-          <div class="modal-actions">
-            <a id="direct-gdrive-link"
-              href="https://drive.google.com/file/d/1Rm2fKtTlNSowmuR-RE6mkI9M5l3ZBF-P/view?usp=sharing" target="_blank"
-              rel="noopener noreferrer" class="modal-btn modal-btn-secondary">
-              <span>OPEN DRIVE TAB</span>
-            </a>
-            <button id="modal-to-tutorial-btn" class="modal-btn modal-btn-primary">
-              <span>SEE TUTORIAL</span>
-              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </button>
-          </div>
+          <iframe id="gdrive-iframe" src="https://drive.google.com/file/d/1Rm2fKtTlNSowmuR-RE6mkI9M5l3ZBF-P/preview"
+            class="gdrive-iframe iframe-loading" title="Google Drive File Preview"></iframe>
         </div>
 
-        <!-- TAB PANEL 2: OFFICIAL YOUTUBE TRAILER -->
-        <div id="tab-panel-trailer" class="modal-tab-panel hidden">
-          <div class="modal-file-info">
-            <svg class="modal-file-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-              <polygon points="5 3 19 12 5 21 5 3" />
+        <div class="modal-actions">
+          <a id="direct-gdrive-link"
+            href="https://drive.google.com/file/d/1Rm2fKtTlNSowmuR-RE6mkI9M5l3ZBF-P/view?usp=sharing" target="_blank"
+            rel="noopener noreferrer" class="modal-btn modal-btn-secondary">
+            <span>OPEN DRIVE TAB</span>
+          </a>
+          <button id="download-modal-to-tutorial-btn" class="modal-btn modal-btn-primary">
+            <span>SEE TUTORIAL</span>
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
             </svg>
-            <div class="modal-file-text">
-              <span class="modal-filename">LEAVE_NO_TRACE_OFFICIAL_TRAILER.MP4</span>
-              <span class="modal-filesize">HD TRAILER PREVIEW • BLEECKER STREET</span>
-            </div>
-          </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-          <div class="modal-frame-container">
-            <div id="trailer-frame-loader" class="modal-frame-loader">
-              <svg class="modal-spinner-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                <circle cx="12" cy="12" r="9" stroke-dasharray="36" stroke-dashoffset="12" />
-                <circle cx="12" cy="12" r="2.5" fill="currentColor" />
-              </svg>
-              <span class="modal-loader-text">FETCHING TRAILER...</span>
-            </div>
-            <iframe id="trailer-iframe" src="" class="gdrive-iframe iframe-loading" title="Leave No Trace Official Trailer"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen></iframe>
-          </div>
+  <!-- Separate Trailer Pop-up Modal -->
+  <div id="trailer-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="trailer-modal-title">
+    <div class="modal-backdrop" id="trailer-modal-backdrop"></div>
+    <div class="modal-card modal-window retro-box">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <span class="modal-dot"></span>
+          <span id="trailer-modal-title" class="modal-title">LEAVE NO TRACE — TRAILER</span>
+        </div>
+        <button id="close-trailer-modal-btn" class="modal-close-btn" aria-label="Close trailer modal">✕</button>
+      </div>
 
-          <div class="modal-actions">
-            <button id="modal-trailer-to-download-btn" class="modal-btn modal-btn-secondary">
-              <span>GET DOWNLOAD</span>
-            </button>
+      <div class="modal-divider"></div>
+
+      <!-- Modal Body Container -->
+      <div class="modal-body">
+        <div class="modal-file-info">
+          <svg class="modal-file-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3" />
+          </svg>
+          <div class="modal-file-text">
+            <span class="modal-filename">LEAVE_NO_TRACE_OFFICIAL_TRAILER.MP4</span>
+            <span class="modal-filesize">HD TRAILER PREVIEW • BLEECKER STREET</span>
           </div>
         </div>
 
-        <!-- TAB PANEL 3: TUTORIAL & GUIDE -->
-        <div id="tab-panel-tutorial" class="modal-tab-panel hidden">
-          <div class="modal-tutorial-container">
-            <div class="tutorial-header" style="margin-bottom: 12px;">
-              <h2 class="tutorial-headline" style="font-size: 28px; margin-bottom: 2px;">TUTORIAL GUIDE</h2>
-              <p class="tutorial-subtitle">HOW TO DOWNLOAD AND WATCH</p>
+        <div class="modal-frame-container">
+          <div id="trailer-frame-loader" class="modal-frame-loader">
+            <svg class="modal-spinner-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="12" cy="12" r="9" stroke-dasharray="36" stroke-dashoffset="12" />
+              <circle cx="12" cy="12" r="2.5" fill="currentColor" />
+            </svg>
+            <span id="trailer-loader-text" class="modal-loader-text">FETCHING TRAILER STREAM...</span>
+            <div class="modal-progress-bar">
+              <div class="modal-progress-fill"></div>
             </div>
-
-            <!-- Steps -->
-            <div class="steps-list">
-              <div class="step-item">
-                <div class="step-left"><div class="step-badge">1</div></div>
-                <div class="step-content">
-                  <h3 class="step-title">DOWNLOAD A TORRENT APP</h3>
-                  <p class="step-desc">GET FLUD OR BITTORRENT FROM APP STORE OR PLAY STORE.</p>
-                </div>
-              </div>
-              <div class="step-divider"></div>
-              <div class="step-item">
-                <div class="step-left"><div class="step-badge">2</div></div>
-                <div class="step-content">
-                  <h3 class="step-title">DOWNLOAD THE TORRENT FILE</h3>
-                  <p class="step-desc">USE THE DOWNLOAD TAB TO GET THE MOODFLIX .TORRENT ARCHIVE.</p>
-                </div>
-              </div>
-              <div class="step-divider"></div>
-              <div class="step-item">
-                <div class="step-left"><div class="step-badge">3</div></div>
-                <div class="step-content">
-                  <h3 class="step-title">OPEN IN TORRENT APP</h3>
-                  <p class="step-desc">OPEN THE .TORRENT FILE IN FLUD OR BITTORRENT TO START DOWNLOADING.</p>
-                </div>
-              </div>
-              <div class="step-divider"></div>
-              <div class="step-item">
-                <div class="step-left"><div class="step-badge">4</div></div>
-                <div class="step-content">
-                  <h3 class="step-title">WATCH WITH VLC MEDIA PLAYER</h3>
-                  <p class="step-desc">FOR MAXIMUM COMPATIBILITY, USE VLC MEDIA PLAYER FOR PLAYBACK.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="tip-box" style="margin-top: 12px; margin-bottom: 16px;">
-              <div class="tip-icon-box">
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2">
-                  <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14" />
-                </svg>
-              </div>
-              <p class="tip-text">
-                VLC SUPPORTS MOST FORMATS AND CODECS, DELIVERING THE BEST PLAYBACK EXPERIENCE.
-              </p>
-            </div>
-
-            <div class="apps-divider">
-              <span class="apps-divider-text">RECOMMENDED APPS</span>
-            </div>
-
-            <!-- App Cards -->
-            <div class="app-cards-list">
-              <div class="app-card">
-                <div class="app-card-left">
-                  <div class="app-icon-circle">
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                      <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
-                    </svg>
-                  </div>
-                  <div class="app-info">
-                    <h4 class="app-title">FLUD</h4>
-                    <p class="app-tagline">LIGHTWEIGHT & POWERFUL</p>
-                  </div>
-                </div>
-                <div class="app-card-actions">
-                  <a href="https://play.google.com/store/search?q=flud&c=apps" target="_blank" rel="noopener noreferrer" class="app-store-btn">
-                    <span>PLAY STORE</span>
-                  </a>
-                </div>
-              </div>
-
-              <div class="app-card">
-                <div class="app-card-left">
-                  <div class="app-icon-circle">
-                    <svg viewBox="0 0 48 48" width="18" height="18">
-                      <circle cx="24" cy="24" r="21.5" fill="none" stroke="currentColor" stroke-width="2.5"/>
-                      <path d="m42.9438,34.1764h-22.0002c-4.4846,0-8.12-3.6355-8.12-8.12s3.6355-8.12,8.12-8.12c2.2423,0,4.2723.9089,5.7417,2.3783" fill="none" stroke="currentColor" stroke-width="2.5"/>
-                    </svg>
-                  </div>
-                  <div class="app-info">
-                    <h4 class="app-title">BITTORRENT</h4>
-                    <p class="app-tagline">TRUSTED TORRENT CLIENT</p>
-                  </div>
-                </div>
-                <div class="app-card-actions">
-                  <a href="https://play.google.com/store/apps/details?id=com.bittorrent.client" target="_blank" rel="noopener noreferrer" class="app-store-btn">
-                    <span>PLAY STORE</span>
-                  </a>
-                </div>
-              </div>
-
-              <div class="app-card">
-                <div class="app-card-left">
-                  <div class="app-icon-box-vlc">
-                    <svg viewBox="0 0 32 32" width="20" height="20" fill="currentColor">
-                      <path d="M13.6,6.6l0.9-3.1c0.5-1.6,2.8-1.6,3.3,0l0.9,3.1C18,6.8,17.2,7,16.2,7S14.4,6.8,13.6,6.6z M10.9,16 c1.2,0.9,3,1.7,5.3,1.7c2.3,0,4.1-0.9,5.3-1.7l-1.4-4.8c-0.9,0.6-2.2,1-3.9,1s-3-0.5-3.9-1L10.9,16z M22.4,18.9l0.5,1.5 c-1.5,1.1-3.8,2.1-6.6,2.1c-2.9,0-5.1-1-6.6-2.1l0.5-1.5H7.9c-0.5,0-0.8,0.3-1,0.7L4.7,28c-0.2,0.6,0.3,1.3,1,1.3h21.1 c0.7,0,1.1-0.6,1-1.3l-2.3-8.4c-0.1-0.4-0.5-0.7-1-0.7H22.4z"/>
-                    </svg>
-                  </div>
-                  <div class="app-info">
-                    <h4 class="app-title">VLC MEDIA PLAYER</h4>
-                    <p class="app-tagline-single">RECOMMENDED PLAYER</p>
-                  </div>
-                </div>
-                <div class="app-card-actions">
-                  <a href="https://www.videolan.org/vlc/" target="_blank" rel="noopener noreferrer" class="app-store-btn">
-                    <span>GET VLC</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-
           </div>
+          <iframe id="trailer-iframe" src="" class="gdrive-iframe iframe-loading" title="Leave No Trace Official Trailer"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
         </div>
 
+        <div class="modal-actions">
+          <button id="close-trailer-btn-bottom" class="modal-btn modal-btn-secondary" style="width: 100%;">
+            <span>CLOSE TRAILER</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>

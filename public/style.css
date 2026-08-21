@@ -524,17 +524,17 @@ body {
 /* 5.3 CTA Section (Download & Trailer Buttons) */
 .cta-section {
   width: 100%;
-  margin-top: clamp(16px, 2.5vh, 28px);
+  margin-top: clamp(38px, 6vh, 60px);
   display: flex;
   flex-direction: column;
-  gap: 26px;
+  gap: 12px;
   position: relative;
   z-index: 35;
   pointer-events: auto;
 }
 
 .trailer-cta-btn {
-  margin-top: 12px;
+  margin-top: 0;
 }
 
 .download-cta-btn {
@@ -1358,6 +1358,38 @@ body {
   letter-spacing: 0.12em;
   color: var(--text-color);
   text-transform: uppercase;
+}
+
+.modal-progress-bar {
+  width: 140px;
+  height: 4px;
+  border: 1px solid var(--border-color);
+  background-color: rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  position: relative;
+  margin-top: 4px;
+}
+
+.modal-progress-fill {
+  height: 100%;
+  width: 0%;
+  background-color: var(--text-color);
+  animation: progressFill 1.4s ease-in-out infinite;
+}
+
+@keyframes progressFill {
+  0% {
+    width: 0%;
+    margin-left: 0%;
+  }
+  50% {
+    width: 75%;
+    margin-left: 12.5%;
+  }
+  100% {
+    width: 100%;
+    margin-left: 0%;
+  }
 }
 
 .gdrive-iframe {

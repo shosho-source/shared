@@ -25,15 +25,15 @@
   const userEmailSpan = document.getElementById('user-email');
   const signoutBtn = document.getElementById('signout-btn');
 
-  // In-Page Retro Modal DOM Elements
-  const gdriveModal = document.getElementById('gdrive-modal');
-  const closeModalBtn = document.getElementById('close-modal-btn');
-  const modalBackdrop = document.getElementById('modal-backdrop');
-  const proceedTutorialBtn = document.getElementById('proceed-tutorial-btn');
-  const modalFrameLoader = document.getElementById('modal-frame-loader');
+  // Separate Download Modal DOM Elements
+  const downloadModal = document.getElementById('download-modal');
+  const closeDownloadModalBtn = document.getElementById('close-download-modal-btn');
+  const downloadModalBackdrop = document.getElementById('download-modal-backdrop');
+  const downloadFrameLoader = document.getElementById('download-frame-loader');
   const gdriveIframe = document.getElementById('gdrive-iframe');
+  const downloadModalToTutorialBtn = document.getElementById('download-modal-to-tutorial-btn');
 
-  // Watch Trailer Modal DOM Elements
+  // Separate Trailer Modal DOM Elements
   const trailerModal = document.getElementById('trailer-modal');
   const trailerBtn = document.getElementById('trailer-btn');
   const trailerBtnText = document.getElementById('trailer-btn-text');
@@ -43,9 +43,13 @@
   const trailerIframe = document.getElementById('trailer-iframe');
   const trailerFrameLoader = document.getElementById('trailer-frame-loader');
 
-  // Supabase Configuration
+  // Tutorial Page Trigger DOM Elements
+  const tutorialBtn = document.getElementById('tutorial-btn');
+  const tutorialBtnText = document.getElementById('tutorial-btn-text');
+
+  // Supabase Configuration (Use Anon Public Key, never Service Role Key)
   const SUPABASE_URL = "https://qtrbwgglmqydfpnwupkm.supabase.co";
-  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0cmJ3Z2dsbXF5ZGZwbnd1cGttIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDY5NTgzMSwiZXhwIjoyMTAwMjcxODMxfQ.TQsJu25lOHoB3JjuRFeWb9tPXSbslSw-d9T3VSa1uq8";
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF0cmJ3Z2dsbXF5ZGZwbnd1cGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ2OTU4MzEsImV4cCI6MjEwMDI3MTgzMX0.example_anon_key";
   let supabaseClient = null;
 
   try {
@@ -374,32 +378,30 @@
 
   async function handleGoogleLogin() {
     if (loginBtnText) {
-      scrambleText(loginBtnText, 'CONNECTING TO GOOGLE...', 600);
+      scrambleText(loginBtnText, 'LOGGING IN...', 400);
     }
 
-    if (supabaseClient) {
+    if (supabaseClient && window.location.protocol.startsWith('http')) {
       try {
-        const { data, error } = await supabaseClient.auth.signInWithOAuth({
+        const { error } = await supabaseClient.auth.signInWithOAuth({
           provider: 'google',
-          options: {
-            redirectTo: window.location.origin
-          }
+          options: { redirectTo: window.location.origin }
         });
-        if (error) throw error;
-        return;
-      } catch (err) {
-        console.error('Supabase Google Auth Error:', err);
+        if (!error) return;
+      } catch (e) {
+        console.warn('Supabase OAuth note, using local demo fallback:', e);
       }
     }
 
-    // Fallback if Supabase OAuth unavailable
-    const fallbackUser = { email: 'user@google.com', name: 'Google User' };
+    // Direct navigation to next page (Download View) for demo/testing mode
+    const testUser = { email: 'tester@google.com', name: 'Test User' };
     try {
-      localStorage.setItem('moodflix_auth_user', JSON.stringify(fallbackUser));
+      localStorage.setItem('moodflix_auth_user', JSON.stringify(testUser));
     } catch (e) {}
+
     setTimeout(function () {
-      showDownloadView(fallbackUser);
-    }, 400);
+      showDownloadView(testUser);
+    }, 300);
   }
 
   async function handleSignOut() {
@@ -464,111 +466,162 @@
     });
   }
 
-  /* 5. Unified In-Page Retro Modal (Download, Trailer, & Tutorial) */
-  const unifiedModal = document.getElementById('unified-modal');
-  const closeUnifiedModalBtn = document.getElementById('close-unified-modal-btn');
-  const unifiedModalBackdrop = document.getElementById('unified-modal-backdrop');
-
-  const tabBtnDownload = document.getElementById('tab-btn-download');
-  const tabBtnTrailer = document.getElementById('tab-btn-trailer');
-  const tabBtnTutorial = document.getElementById('tab-btn-tutorial');
-
-  const tabPanelDownload = document.getElementById('tab-panel-download');
-  const tabPanelTrailer = document.getElementById('tab-panel-trailer');
-  const tabPanelTutorial = document.getElementById('tab-panel-tutorial');
-
-  const modalToTutorialBtn = document.getElementById('modal-to-tutorial-btn');
-  const modalTrailerToDownloadBtn = document.getElementById('modal-trailer-to-download-btn');
-
+  /* 5. Separate Modals & View Navigation (Download Modal, Trailer Modal, Tutorial Page) */
+  const GDRIVE_PREVIEW_URL = "https://drive.google.com/file/d/1Rm2fKtTlNSowmuR-RE6mkI9M5l3ZBF-P/preview";
   const TRAILER_YOUTUBE_URL = "https://www.youtube.com/embed/of00RzVENT8?autoplay=1&controls=1&rel=0&modestbranding=1";
 
-  function switchModalTab(tabName) {
-    // Hide all panels & reset active tab styles
-    if (tabPanelDownload) tabPanelDownload.classList.add('hidden');
-    if (tabPanelTrailer) tabPanelTrailer.classList.add('hidden');
-    if (tabPanelTutorial) tabPanelTutorial.classList.add('hidden');
+  /* Prefetching Engine for Drive File & YouTube Trailer */
+  const prefetchedUrls = new Set();
 
-    if (tabBtnDownload) tabBtnDownload.classList.remove('active');
-    if (tabBtnTrailer) tabBtnTrailer.classList.remove('active');
-    if (tabBtnTutorial) tabBtnTutorial.classList.remove('active');
+  function prefetchResource(url) {
+    if (!url || prefetchedUrls.has(url)) return;
+    prefetchedUrls.add(url);
 
-    if (tabName === 'trailer') {
-      if (tabPanelTrailer) tabPanelTrailer.classList.remove('hidden');
-      if (tabBtnTrailer) tabBtnTrailer.classList.add('active');
+    try {
+      // 1. Link prefetch tag injection
+      const link = document.createElement('link');
+      link.rel = 'prefetch';
+      link.href = url;
+      link.as = 'document';
+      document.head.appendChild(link);
 
-      // Load YouTube trailer iframe when active
-      if (trailerIframe && (!trailerIframe.src || trailerIframe.src === "about:blank" || trailerIframe.src === window.location.href)) {
-        if (trailerFrameLoader) trailerFrameLoader.classList.remove('fade-out');
-        trailerIframe.classList.add('iframe-loading');
-        trailerIframe.src = TRAILER_YOUTUBE_URL;
-
-        let trailerTimeout = setTimeout(function () {
-          if (trailerFrameLoader) trailerFrameLoader.classList.add('fade-out');
-          if (trailerIframe) trailerIframe.classList.remove('iframe-loading');
-        }, 1500);
-
-        trailerIframe.onload = function () {
-          clearTimeout(trailerTimeout);
-          if (trailerFrameLoader) trailerFrameLoader.classList.add('fade-out');
-          if (trailerIframe) trailerIframe.classList.remove('iframe-loading');
-        };
+      // 2. Fetch cache warming fallback
+      if (window.fetch) {
+        fetch(url, { mode: 'no-cors', cache: 'force-cache' }).catch(function () {});
       }
-    } else if (tabName === 'tutorial') {
-      if (tabPanelTutorial) tabPanelTutorial.classList.remove('hidden');
-      if (tabBtnTutorial) tabBtnTutorial.classList.add('active');
-    } else {
-      // Default: 'download'
-      if (tabPanelDownload) tabPanelDownload.classList.remove('hidden');
-      if (tabBtnDownload) tabBtnDownload.classList.add('active');
+    } catch (e) {
+      console.warn('Prefetch note:', e);
     }
   }
 
-  function openUnifiedModal(defaultTab) {
-    if (unifiedModal) {
-      unifiedModal.classList.remove('hidden');
-    }
-    switchModalTab(defaultTab || 'download');
+  // Pre-load on user hover/touch
+  if (downloadBtn) {
+    downloadBtn.addEventListener('mouseenter', () => prefetchResource(GDRIVE_PREVIEW_URL), { passive: true });
+    downloadBtn.addEventListener('touchstart', () => prefetchResource(GDRIVE_PREVIEW_URL), { passive: true });
+  }
 
-    // Trigger drive iframe loader animation
+  if (trailerBtn) {
+    trailerBtn.addEventListener('mouseenter', () => prefetchResource(TRAILER_YOUTUBE_URL), { passive: true });
+    trailerBtn.addEventListener('touchstart', () => prefetchResource(TRAILER_YOUTUBE_URL), { passive: true });
+  }
+
+  // Idle background prefetching
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(function () {
+      prefetchResource(GDRIVE_PREVIEW_URL);
+      prefetchResource(TRAILER_YOUTUBE_URL);
+    });
+  } else {
+    setTimeout(function () {
+      prefetchResource(GDRIVE_PREVIEW_URL);
+      prefetchResource(TRAILER_YOUTUBE_URL);
+    }, 1500);
+  }
+
+  // Download Modal Logic
+  function openDownloadModal() {
+    prefetchResource(GDRIVE_PREVIEW_URL);
+    if (downloadModal) downloadModal.classList.remove('hidden');
+
+    if (downloadFrameLoader) downloadFrameLoader.classList.remove('fade-out');
     if (gdriveIframe) {
-      let loaderTimeout = setTimeout(function () {
-        if (modalFrameLoader) modalFrameLoader.classList.add('fade-out');
-        if (gdriveIframe) gdriveIframe.classList.remove('iframe-loading');
-      }, 1500);
+      gdriveIframe.classList.add('iframe-loading');
+      gdriveIframe.src = GDRIVE_PREVIEW_URL;
+    }
+
+    const downloadLoaderText = document.getElementById('download-loader-text');
+    if (downloadLoaderText) {
+      scrambleText(downloadLoaderText, 'FETCHING SECURE DOWNLOAD LINK...', 500);
+    }
+
+    let isDownloadHideTriggered = false;
+    function hideDownloadLoader() {
+      if (isDownloadHideTriggered) return;
+      isDownloadHideTriggered = true;
+      if (downloadFrameLoader) downloadFrameLoader.classList.add('fade-out');
+      if (gdriveIframe) gdriveIframe.classList.remove('iframe-loading');
+    }
+
+    const downloadMinTimer = setTimeout(hideDownloadLoader, 1200);
+
+    if (gdriveIframe) {
       gdriveIframe.onload = function () {
-        clearTimeout(loaderTimeout);
-        if (modalFrameLoader) modalFrameLoader.classList.add('fade-out');
-        if (gdriveIframe) gdriveIframe.classList.remove('iframe-loading');
+        setTimeout(hideDownloadLoader, 300);
       };
     }
   }
 
-  function closeUnifiedModal() {
-    if (unifiedModal) {
-      unifiedModal.classList.add('hidden');
+  function closeDownloadModal() {
+    if (downloadModal) downloadModal.classList.add('hidden');
+  }
+
+  if (closeDownloadModalBtn) closeDownloadModalBtn.addEventListener('click', closeDownloadModal);
+  if (downloadModalBackdrop) downloadModalBackdrop.addEventListener('click', closeDownloadModal);
+
+  if (downloadModalToTutorialBtn) {
+    downloadModalToTutorialBtn.addEventListener('click', function () {
+      closeDownloadModal();
+      showTutorialView();
+    });
+  }
+
+  // Trailer Modal Logic
+  function openTrailerModal() {
+    prefetchResource(TRAILER_YOUTUBE_URL);
+    if (trailerModal) trailerModal.classList.remove('hidden');
+
+    if (trailerFrameLoader) trailerFrameLoader.classList.remove('fade-out');
+    if (trailerIframe) {
+      trailerIframe.classList.add('iframe-loading');
+      trailerIframe.src = TRAILER_YOUTUBE_URL;
     }
-    // Stop YouTube video playback on modal close
+
+    const trailerLoaderText = document.getElementById('trailer-loader-text');
+    if (trailerLoaderText) {
+      scrambleText(trailerLoaderText, 'FETCHING TRAILER STREAM...', 500);
+    }
+
+    let isTrailerHideTriggered = false;
+    function hideTrailerLoader() {
+      if (isTrailerHideTriggered) return;
+      isTrailerHideTriggered = true;
+      if (trailerFrameLoader) trailerFrameLoader.classList.add('fade-out');
+      if (trailerIframe) trailerIframe.classList.remove('iframe-loading');
+    }
+
+    const trailerMinTimer = setTimeout(hideTrailerLoader, 1200);
+
+    if (trailerIframe) {
+      trailerIframe.onload = function () {
+        setTimeout(hideTrailerLoader, 300);
+      };
+    }
+  }
+
+  function closeTrailerModal() {
+    if (trailerModal) trailerModal.classList.add('hidden');
     if (trailerIframe) {
       trailerIframe.src = "";
     }
   }
 
-  // Event Listeners for Tab Switching
-  if (tabBtnDownload) tabBtnDownload.addEventListener('click', () => switchModalTab('download'));
-  if (tabBtnTrailer) tabBtnTrailer.addEventListener('click', () => switchModalTab('trailer'));
-  if (tabBtnTutorial) tabBtnTutorial.addEventListener('click', () => switchModalTab('tutorial'));
+  if (closeTrailerModalBtn) closeTrailerModalBtn.addEventListener('click', closeTrailerModal);
+  if (trailerModalBackdrop) trailerModalBackdrop.addEventListener('click', closeTrailerModal);
+  if (closeTrailerBtnBottom) closeTrailerBtnBottom.addEventListener('click', closeTrailerModal);
 
-  if (modalToTutorialBtn) modalToTutorialBtn.addEventListener('click', () => switchModalTab('tutorial'));
-  if (modalTrailerToDownloadBtn) modalTrailerToDownloadBtn.addEventListener('click', () => switchModalTab('download'));
-
-  if (closeUnifiedModalBtn) closeUnifiedModalBtn.addEventListener('click', closeUnifiedModal);
-  if (unifiedModalBackdrop) unifiedModalBackdrop.addEventListener('click', closeUnifiedModal);
+  // Tutorial Back Navigation
+  if (backToDownloadBtn) {
+    backToDownloadBtn.addEventListener('click', function () {
+      const cached = localStorage.getItem('moodflix_auth_user');
+      showDownloadView(cached ? JSON.parse(cached) : null);
+    });
+  }
 
   // Main Page Action Triggers
   if (downloadBtn) {
     downloadBtn.addEventListener('click', function () {
       if (downloadBtnText) scrambleText(downloadBtnText, 'OPENING DOWNLOAD...', 400);
-      openUnifiedModal('download');
+      openDownloadModal();
       setTimeout(function () {
         if (downloadBtnText) downloadBtnText.textContent = 'DOWNLOAD TORRENT';
       }, 600);
@@ -579,10 +632,21 @@
     trailerBtn.addEventListener('click', function (e) {
       if (e) e.stopPropagation();
       if (trailerBtnText) scrambleText(trailerBtnText, 'OPENING TRAILER...', 400);
-      openUnifiedModal('trailer');
+      openTrailerModal();
       setTimeout(function () {
         if (trailerBtnText) trailerBtnText.textContent = 'WATCH TRAILER';
       }, 600);
+    });
+  }
+
+  if (tutorialBtn) {
+    tutorialBtn.addEventListener('click', function (e) {
+      if (e) e.stopPropagation();
+      if (tutorialBtnText) scrambleText(tutorialBtnText, 'OPENING TUTORIAL...', 400);
+      setTimeout(function () {
+        if (tutorialBtnText) tutorialBtnText.textContent = 'TUTORIAL GUIDE';
+        showTutorialView();
+      }, 400);
     });
   }
 
