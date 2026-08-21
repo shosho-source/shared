@@ -527,14 +527,14 @@ body {
   margin-top: clamp(16px, 2.5vh, 28px);
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 26px;
   position: relative;
   z-index: 35;
   pointer-events: auto;
 }
 
 .trailer-cta-btn {
-  margin-top: 4px;
+  margin-top: 12px;
 }
 
 .download-cta-btn {
@@ -1421,4 +1421,51 @@ body {
 .modal-btn-primary:hover {
   background-color: #000000;
   opacity: 0.9;
+}
+
+/* Enforce strict zero-displacement across all buttons on hover, active, and focus */
+button,
+a.modal-btn,
+a.app-store-btn,
+.download-cta-btn,
+.trailer-cta-btn,
+.google-login-btn,
+.back-link-btn,
+.modal-tab-btn,
+.modal-close-btn,
+.signout-btn {
+  transform: none !important;
+  top: auto !important;
+  left: auto !important;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease !important;
+}
+
+button:hover,
+button:active,
+button:focus,
+button:focus-visible,
+a.modal-btn:hover,
+a.modal-btn:active,
+a.modal-btn:focus,
+a.app-store-btn:hover,
+a.app-store-btn:active,
+.download-cta-btn:hover,
+.download-cta-btn:active,
+.download-cta-btn:focus,
+.trailer-cta-btn:hover,
+.trailer-cta-btn:active,
+.trailer-cta-btn:focus,
+.google-login-btn:hover,
+.google-login-btn:active,
+.google-login-btn:focus,
+.back-link-btn:hover,
+.back-link-btn:active,
+.back-link-btn:focus,
+.modal-tab-btn:hover,
+.modal-tab-btn:active,
+.modal-tab-btn:focus {
+  transform: none !important;
+  top: auto !important;
+  left: auto !important;
+  box-shadow: none !important;
 }
