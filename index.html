@@ -77,7 +77,20 @@
       <!-- View A: Google Log In View -->
       <div id="auth-view" class="view-container">
 
-        <div class="auth-card">
+        <!-- Retro Hero Section -->
+        <section class="hero-section">
+          <!-- Non-Interactive VHS Cassette Centerpiece -->
+          <div class="cassette-wrapper non-interactive">
+            <div class="halftone-circle non-interactive"></div>
+            <div class="cassette-card non-interactive">
+              <img src="images/hero.webp" alt="Retro VHS Cassette Tape - Movie Night"
+                class="cassette-img non-interactive" width="900" height="600" fetchpriority="high" decoding="async"
+                loading="eager">
+            </div>
+          </div>
+        </section>
+
+        <section class="content-section">
           <!-- Status Tag -->
           <div class="status-tag">
             <span class="status-dot"></span>
@@ -85,40 +98,38 @@
           </div>
 
           <!-- Auth Headline -->
-          <h1 class="hero-headline auth-headline">
+          <h1 class="hero-headline">
             <span>AUTHENTICATION</span>
             <span>REQUIRED</span>
           </h1>
 
           <!-- Subtitle -->
-          <p class="hero-subtitle auth-subtitle">
+          <p class="hero-subtitle">
             PLEASE SIGN IN WITH YOUR GOOGLE ACCOUNT<br>TO UNLOCK THIS SHARED TORRENT.
           </p>
+        </section>
 
-          <!-- Google Sign In Button -->
-          <div class="cta-section">
-            <button id="google-login-btn" class="google-login-btn">
-              <div class="google-icon-box">
-                <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
-                  <path fill="#4285F4"
-                    d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z" />
-                  <path fill="#34A853"
-                    d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z" />
-                  <path fill="#FBBC05"
-                    d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z" />
-                  <path fill="#EA4335"
-                    d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" />
-                </svg>
-              </div>
-              <div class="cta-divider"></div>
-              <div class="cta-text-box">
-                <span id="login-btn-text" class="cta-title">CONTINUE WITH GOOGLE</span>
-              </div>
-            </button>
-          </div>
-
-
-        </div>
+        <!-- Google Sign In Button -->
+        <section class="cta-section">
+          <button id="google-login-btn" class="google-login-btn">
+            <div class="google-icon-box">
+              <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
+                <path fill="#4285F4"
+                  d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z" />
+                <path fill="#34A853"
+                  d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24z" />
+                <path fill="#FBBC05"
+                  d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15z" />
+                <path fill="#EA4335"
+                  d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" />
+              </svg>
+            </div>
+            <div class="cta-divider"></div>
+            <div class="cta-text-box">
+              <span id="login-btn-text" class="cta-title">CONTINUE WITH GOOGLE</span>
+            </div>
+          </button>
+        </section>
 
       </div>
 
@@ -158,7 +169,7 @@
           </p>
         </section>
 
-        <!-- Download Button Section -->
+        <!-- Download & Trailer Button Section -->
         <section class="cta-section">
           <button id="download-btn" class="download-cta-btn">
             <div class="cta-icon-box">
@@ -174,7 +185,282 @@
               <span id="download-btn-text" class="cta-title">DOWNLOAD TORRENT</span>
             </div>
           </button>
+
+          <button id="trailer-btn" class="download-cta-btn trailer-cta-btn">
+            <div class="cta-icon-box">
+              <svg class="cta-download-icon" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
+            </div>
+            <div class="cta-divider"></div>
+            <div class="cta-text-box">
+              <span id="trailer-btn-text" class="cta-title">WATCH TRAILER</span>
+            </div>
+          </button>
         </section>
+
+      </div>
+
+      <!-- View C: Tutorial View (How to Download & Watch) -->
+      <div id="tutorial-view" class="view-container view-hidden">
+
+        <div class="tutorial-card">
+          <!-- Back Navigation Button -->
+          <div class="tutorial-nav">
+            <button id="back-to-download-btn" class="back-link-btn">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+              </svg>
+              <span>BACK TO DOWNLOAD</span>
+            </button>
+          </div>
+
+          <!-- Title Header -->
+          <div class="tutorial-header">
+            <h1 class="tutorial-headline">TUTORIAL</h1>
+            <p class="tutorial-subtitle">HOW TO DOWNLOAD AND WATCH</p>
+          </div>
+
+          <!-- Steps List -->
+          <div class="steps-list">
+
+            <!-- Step 1 -->
+            <div class="step-item">
+              <div class="step-left">
+                <div class="step-badge">1</div>
+              </div>
+              <div class="step-content">
+                <h3 class="step-title">DOWNLOAD A TORRENT APP</h3>
+                <p class="step-desc">GET FLUD OR BITTORRENT FROM THE APP STORE OR PLAY STORE.</p>
+              </div>
+              <div class="step-graphic">
+                <div class="halftone-circle-sm">
+                  <svg viewBox="0 0 40 40" class="step-svg" width="34" height="34">
+                    <rect x="12" y="6" width="16" height="28" rx="3" fill="none" stroke="currentColor"
+                      stroke-width="1.8" />
+                    <line x1="17" y1="9" x2="23" y2="9" stroke="currentColor" stroke-width="1.2" />
+                    <circle cx="20" cy="31" r="1" fill="currentColor" />
+                    <path d="M20 13 v9 M16 18 l4 4 l4 -4 M15 24 h10" fill="none" stroke="currentColor"
+                      stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-divider"></div>
+
+            <!-- Step 2 -->
+            <div class="step-item">
+              <div class="step-left">
+                <div class="step-badge">2</div>
+              </div>
+              <div class="step-content">
+                <h3 class="step-title">DOWNLOAD THE TORRENT</h3>
+                <p class="step-desc">CLICK THE DOWNLOAD BUTTON ON THE PREVIOUS PAGE TO GET THE .TORRENT FILE.</p>
+              </div>
+              <div class="step-graphic">
+                <div class="halftone-circle-sm">
+                  <svg viewBox="0 0 48 48" class="step-svg" width="30" height="30">
+                    <path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M10.78,37.2717H34.76c13.0183,0,10.8419-19.5876-2.2165-15.2348,0-10.882-19.5876-10.882-19.5876,2.1764C2.0743,22.0369,2.0743,37.2717,10.78,37.2717Z"/>
+                    <polyline fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" points="27.273 27.477 24 30.75 20.727 27.477"/>
+                    <line fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" x1="24" y1="30.7497" x2="24" y2="20.7517"/>
+                    <line fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" x1="18.2423" y1="32.7517" x2="29.7577" y2="32.7517"/>
+                    <line fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" x1="38.6729" y1="17.5294" x2="38.6729" y2="10.7283"/>
+                    <line fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" x1="35.2724" y1="14.1288" x2="42.0734" y2="14.1288"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-divider"></div>
+
+            <!-- Step 3 -->
+            <div class="step-item">
+              <div class="step-left">
+                <div class="step-badge">3</div>
+              </div>
+              <div class="step-content">
+                <h3 class="step-title">OPEN IN TORRENT APP</h3>
+                <p class="step-desc">OPEN THE .TORRENT FILE USING FLUD OR BITTORRENT TO START DOWNLOADING.</p>
+              </div>
+              <div class="step-graphic">
+                <div class="halftone-circle-sm">
+                  <svg viewBox="0 0 40 40" class="step-svg" width="34" height="34">
+                    <rect x="12" y="6" width="16" height="28" rx="3" fill="none" stroke="currentColor"
+                      stroke-width="1.8" />
+                    <line x1="17" y1="9" x2="23" y2="9" stroke="currentColor" stroke-width="1.2" />
+                    <circle cx="20" cy="31" r="1" fill="currentColor" />
+                    <text x="20" y="22.5" font-size="11" font-weight="bold" fill="currentColor" text-anchor="middle"
+                      font-family="'Space Mono', monospace">μ</text>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="step-divider"></div>
+
+            <!-- Step 4 -->
+            <div class="step-item">
+              <div class="step-left">
+                <div class="step-badge">4</div>
+              </div>
+              <div class="step-content">
+                <h3 class="step-title">WATCH WITH VLC</h3>
+                <p class="step-desc">FOR MAXIMUM COMPATIBILITY, USE VLC MEDIA PLAYER TO PLAY YOUR MOVIE.</p>
+              </div>
+              <div class="step-graphic">
+                <div class="halftone-circle-sm">
+                  <svg viewBox="0 0 32 32" class="step-svg" width="26" height="26" fill="currentColor">
+                    <path d="M13.6,6.6l0.9-3.1c0.5-1.6,2.8-1.6,3.3,0l0.9,3.1C18,6.8,17.2,7,16.2,7S14.4,6.8,13.6,6.6z M10.9,16 c1.2,0.9,3,1.7,5.3,1.7c2.3,0,4.1-0.9,5.3-1.7l-1.4-4.8c-0.9,0.6-2.2,1-3.9,1s-3-0.5-3.9-1L10.9,16z M22.4,18.9l0.5,1.5 c-1.5,1.1-3.8,2.1-6.6,2.1c-2.9,0-5.1-1-6.6-2.1l0.5-1.5H7.9c-0.5,0-0.8,0.3-1,0.7L4.7,28c-0.2,0.6,0.3,1.3,1,1.3h21.1 c0.7,0,1.1-0.6,1-1.3l-2.3-8.4c-0.1-0.4-0.5-0.7-1-0.7H22.4z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- VLC Tip Callout Box -->
+          <div class="tip-box">
+            <div class="tip-icon-box">
+              <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14" />
+              </svg>
+            </div>
+            <p class="tip-text">
+              VLC SUPPORTS MOST FORMATS AND CODECS, DELIVERING THE BEST PLAYBACK EXPERIENCE.
+            </p>
+          </div>
+
+          <!-- Get Apps Section Divider -->
+          <div class="apps-divider">
+            <span class="apps-divider-text">GET APPS</span>
+          </div>
+
+          <!-- App Cards -->
+          <div class="app-cards-list">
+
+            <!-- Card 1: FLUD -->
+            <div class="app-card">
+              <div class="app-card-left">
+                <div class="app-icon-circle">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+                  </svg>
+                </div>
+                <div class="app-info">
+                  <h4 class="app-title">FLUD</h4>
+                  <p class="app-tagline">LIGHTWEIGHT.<br>POWERFUL.<br>NO LIMITS.</p>
+                </div>
+              </div>
+              <div class="app-card-actions">
+                <a href="https://apps.apple.com/us/app/qremote-for-qbittorrent/id6756276747" target="_blank"
+                  rel="noopener noreferrer" class="app-store-btn">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+                    <path
+                      d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.32c.67-.82 1.13-1.96.99-3.12-1 .04-2.22.67-2.92 1.49-.62.72-1.16 1.88-1.01 3.02 1.12.09 2.27-.57 2.94-1.39z" />
+                  </svg>
+                  <span>APP STORE</span>
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"
+                    class="ext-icon">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                </a>
+                <a href="https://play.google.com/store/search?q=flud&c=apps" target="_blank" rel="noopener noreferrer"
+                  class="app-store-btn">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+                    <path d="M3 20.5v-17c0-.55.3-1 .8-.8l13.5 8.5c.4.3.4.9 0 1.2L3.8 21.3c-.5.2-.8-.25-.8-.8z" />
+                  </svg>
+                  <span>PLAY STORE</span>
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"
+                    class="ext-icon">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Card 2: BITTORRENT -->
+            <div class="app-card">
+              <div class="app-card-left">
+                <div class="app-icon-circle">
+                  <svg viewBox="0 0 48 48" width="22" height="22">
+                    <circle cx="24" cy="24" r="21.5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="m42.9438,34.1764h-22.0002c-4.4846,0-8.12-3.6355-8.12-8.12s3.6355-8.12,8.12-8.12c2.2423,0,4.2723.9089,5.7417,2.3783" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="m41.1118,37.0185h-20.1682c-6.0542,0-10.9621-4.9079-10.9621-10.9621s4.9079-10.9621,10.9621-10.9621c1.4863,0,2.9036.2958,4.1961.8318" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="m38.5148,39.8605h-17.5712c-7.6238,0-13.8041-6.1803-13.8041-13.8041s6.1803-13.8041,13.8041-13.8041" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="app-info">
+                  <h4 class="app-title">BITTORRENT</h4>
+                  <p class="app-tagline">THE ORIGINAL<br>TORRENT APP.<br>TRUSTED BY MILLIONS.</p>
+                </div>
+              </div>
+              <div class="app-card-actions">
+                <a href="https://apps.apple.com/us/app/qremote-for-qbittorrent/id6756276747" target="_blank"
+                  rel="noopener noreferrer" class="app-store-btn">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+                    <path
+                      d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.32c.67-.82 1.13-1.96.99-3.12-1 .04-2.22.67-2.92 1.49-.62.72-1.16 1.88-1.01 3.02 1.12.09 2.27-.57 2.94-1.39z" />
+                  </svg>
+                  <span>APP STORE</span>
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"
+                    class="ext-icon">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                </a>
+                <a href="https://play.google.com/store/apps/details?id=com.bittorrent.client" target="_blank"
+                  rel="noopener noreferrer" class="app-store-btn">
+                  <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor">
+                    <path d="M3 20.5v-17c0-.55.3-1 .8-.8l13.5 8.5c.4.3.4.9 0 1.2L3.8 21.3c-.5.2-.8-.25-.8-.8z" />
+                  </svg>
+                  <span>PLAY STORE</span>
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.2"
+                    class="ext-icon">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <!-- Card 3: USE VLC MEDIA PLAYER -->
+            <div class="app-card app-card-vlc">
+              <div class="app-card-left">
+                <div class="app-icon-box-vlc">
+                  <svg viewBox="0 0 32 32" width="24" height="24" fill="currentColor">
+                    <path d="M13.6,6.6l0.9-3.1c0.5-1.6,2.8-1.6,3.3,0l0.9,3.1C18,6.8,17.2,7,16.2,7S14.4,6.8,13.6,6.6z M10.9,16 c1.2,0.9,3,1.7,5.3,1.7c2.3,0,4.1-0.9,5.3-1.7l-1.4-4.8c-0.9,0.6-2.2,1-3.9,1s-3-0.5-3.9-1L10.9,16z M22.4,18.9l0.5,1.5 c-1.5,1.1-3.8,2.1-6.6,2.1c-2.9,0-5.1-1-6.6-2.1l0.5-1.5H7.9c-0.5,0-0.8,0.3-1,0.7L4.7,28c-0.2,0.6,0.3,1.3,1,1.3h21.1 c0.7,0,1.1-0.6,1-1.3l-2.3-8.4c-0.1-0.4-0.5-0.7-1-0.7H22.4z"/>
+                  </svg>
+                </div>
+                <div class="app-info">
+                  <h4 class="app-title">USE VLC MEDIA PLAYER</h4>
+                  <p class="app-tagline-single">DOWNLOAD FROM APP STORE OR PLAY STORE.</p>
+                </div>
+              </div>
+              <div class="app-card-actions">
+                <a href="https://www.videolan.org/vlc/" target="_blank" rel="noopener noreferrer"
+                  class="app-store-btn single-ext-btn" aria-label="Download VLC Media Player">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
 
@@ -191,6 +477,107 @@
       </div>
     </footer>
 
+  </div>
+
+  <!-- Google Drive In-Page Retro Modal Popup -->
+  <div id="gdrive-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <span class="modal-dot"></span>
+          <span id="modal-title" class="modal-title">GOOGLE DRIVE FILE PREVIEW</span>
+        </div>
+        <button id="close-modal-btn" class="modal-close-btn" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-body">
+        <div class="modal-file-info">
+          <svg class="modal-file-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+            stroke-width="2">
+            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+            <polyline points="2 17 12 22 22 17" />
+            <polyline points="2 12 12 17 22 12" />
+          </svg>
+          <div class="modal-file-text">
+            <span class="modal-filename">MOODFLIX_MOVIE_ARCHIVE.TORRENT</span>
+            <span class="modal-filesize">READY FOR DOWNLOAD • SECURE FILE</span>
+          </div>
+        </div>
+
+        <div class="modal-frame-container">
+          <div id="modal-frame-loader" class="modal-frame-loader">
+            <svg class="modal-spinner-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="12" cy="12" r="9" stroke-dasharray="36" stroke-dashoffset="12" />
+              <circle cx="12" cy="12" r="2.5" fill="currentColor" />
+            </svg>
+            <span class="modal-loader-text">LOADING DRIVE PREVIEW...</span>
+          </div>
+          <iframe id="gdrive-iframe" src="https://drive.google.com/file/d/1Rm2fKtTlNSowmuR-RE6mkI9M5l3ZBF-P/preview"
+            class="gdrive-iframe iframe-loading" title="Google Drive File Preview"></iframe>
+        </div>
+
+        <div class="modal-actions">
+          <a id="direct-gdrive-link"
+            href="https://drive.google.com/file/d/1Rm2fKtTlNSowmuR-RE6mkI9M5l3ZBF-P/view?usp=sharing" target="_blank"
+            rel="noopener noreferrer" class="modal-btn modal-btn-secondary">
+            <span>OPEN DRIVE TAB</span>
+          </a>
+          <button id="proceed-tutorial-btn" class="modal-btn modal-btn-primary">
+            <span>GO TO TUTORIAL</span>
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4.B In-Page Retro Modal Popup (YouTube Trailer Preview) -->
+  <div id="trailer-modal" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal-backdrop" id="trailer-modal-backdrop"></div>
+    <div class="modal-window retro-box" role="dialog" aria-modal="true" aria-labelledby="trailer-modal-title">
+      <div class="modal-header">
+        <div class="modal-title-box">
+          <span class="modal-dot"></span>
+          <span id="trailer-modal-title" class="modal-title">LEAVE NO TRACE • OFFICIAL TRAILER</span>
+        </div>
+        <button id="close-trailer-modal-btn" class="modal-close-btn" aria-label="Close modal">✕</button>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-body">
+        <div class="modal-file-info">
+          <svg class="modal-file-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <polygon points="5 3 19 12 5 21 5 3" />
+          </svg>
+          <div class="modal-file-text">
+            <span class="modal-filename">LEAVE_NO_TRACE_OFFICIAL_TRAILER.MP4</span>
+            <span class="modal-filesize">HD TRAILER PREVIEW • BLEECKER STREET</span>
+          </div>
+        </div>
+
+        <div class="modal-frame-container">
+          <div id="trailer-frame-loader" class="modal-frame-loader">
+            <svg class="modal-spinner-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="12" cy="12" r="9" stroke-dasharray="36" stroke-dashoffset="12" />
+              <circle cx="12" cy="12" r="2.5" fill="currentColor" />
+            </svg>
+            <span class="modal-loader-text">FETCHING TRAILER...</span>
+          </div>
+          <iframe id="trailer-iframe" src="" class="gdrive-iframe iframe-loading" title="Leave No Trace Official Trailer"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen></iframe>
+        </div>
+
+        <div class="modal-actions">
+          <button id="close-trailer-btn-bottom" class="modal-btn modal-btn-secondary">
+            <span>CLOSE TRAILER</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Deferred Scripts: Supabase JS, Canvas Confetti, WebGL Fluid Simulation, and Main Logic -->

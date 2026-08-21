@@ -18,11 +18,31 @@
   // Auth DOM Elements
   const authView = document.getElementById('auth-view');
   const downloadView = document.getElementById('download-view');
+  const tutorialView = document.getElementById('tutorial-view');
+  const backToDownloadBtn = document.getElementById('back-to-download-btn');
   const googleLoginBtn = document.getElementById('google-login-btn');
   const loginBtnText = document.getElementById('login-btn-text');
   const userProfile = document.getElementById('user-profile');
   const userEmailSpan = document.getElementById('user-email');
   const signoutBtn = document.getElementById('signout-btn');
+
+  // In-Page Retro Modal DOM Elements
+  const gdriveModal = document.getElementById('gdrive-modal');
+  const closeModalBtn = document.getElementById('close-modal-btn');
+  const modalBackdrop = document.getElementById('modal-backdrop');
+  const proceedTutorialBtn = document.getElementById('proceed-tutorial-btn');
+  const modalFrameLoader = document.getElementById('modal-frame-loader');
+  const gdriveIframe = document.getElementById('gdrive-iframe');
+
+  // Watch Trailer Modal DOM Elements
+  const trailerModal = document.getElementById('trailer-modal');
+  const trailerBtn = document.getElementById('trailer-btn');
+  const trailerBtnText = document.getElementById('trailer-btn-text');
+  const closeTrailerModalBtn = document.getElementById('close-trailer-modal-btn');
+  const trailerModalBackdrop = document.getElementById('trailer-modal-backdrop');
+  const closeTrailerBtnBottom = document.getElementById('close-trailer-btn-bottom');
+  const trailerIframe = document.getElementById('trailer-iframe');
+  const trailerFrameLoader = document.getElementById('trailer-frame-loader');
 
   // Supabase Configuration
   const SUPABASE_URL = "https://qtrbwgglmqydfpnwupkm.supabase.co";
@@ -128,13 +148,160 @@
   }, { passive: true });
 
   /* --------------------------------------------------------------------------
-     3. Authentication & View State Logic (Google Log In -> Download)
+     Universal Text Scramble System (Auto-resolves within 1 second)
      -------------------------------------------------------------------------- */
+  const scrambleChars = '!@#$%^&*()_+-=[]{}|;:,.<>?/0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+  function scrambleText(element, targetText, duration) {
+    if (!element) return;
+    const dur = duration || 800;
+    const target = targetText || element.getAttribute('data-original-text') || element.textContent.trim();
+    if (element._scrambleInterval) clearInterval(element._scrambleInterval);
+
+    let frame = 0;
+    const totalFrames = Math.floor(dur / 25);
+
+    element._scrambleInterval = setInterval(function () {
+      frame++;
+      const progress = frame / totalFrames;
+      const revealedLength = Math.floor(target.length * progress);
+
+      let output = '';
+      for (let i = 0; i < target.length; i++) {
+        if (target[i] === ' ' || target[i] === '\n') {
+          output += target[i];
+        } else if (i < revealedLength) {
+          output += target[i];
+        } else {
+          output += scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+        }
+      }
+
+      element.textContent = output;
+
+      if (frame >= totalFrames) {
+        element.textContent = target;
+        clearInterval(element._scrambleInterval);
+        element._scrambleInterval = null;
+      }
+    }, 25);
+  }
+
+  function attachCursorScramble(element) {
+    if (!element) return;
+
+    if (!element.getAttribute('data-original-text')) {
+      element.setAttribute('data-original-text', element.textContent.trim());
+    }
+
+    let isScrambling = false;
+    let loopInterval = null;
+    let maxTimeout = null;
+    let hoverRatio = 0.5;
+
+    function stopAndResolve() {
+      if (loopInterval) {
+        clearInterval(loopInterval);
+        loopInterval = null;
+      }
+      if (maxTimeout) {
+        clearTimeout(maxTimeout);
+        maxTimeout = null;
+      }
+      const targetText = element.getAttribute('data-original-text') || element.textContent.trim();
+      scrambleText(element, targetText, 400);
+      isScrambling = false;
+    }
+
+    element.addEventListener('mouseenter', function (e) {
+      if (isScrambling) return;
+      isScrambling = true;
+
+      const targetText = element.getAttribute('data-original-text') || element.textContent.trim();
+      const rect = element.getBoundingClientRect();
+      if (rect.width > 0) hoverRatio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+
+      loopInterval = setInterval(function () {
+        const len = targetText.length;
+        const focusIndex = Math.floor(hoverRatio * len);
+
+        let output = '';
+        for (let i = 0; i < len; i++) {
+          if (targetText[i] === ' ' || targetText[i] === '\n') {
+            output += targetText[i];
+            continue;
+          }
+          const dist = Math.abs(i - focusIndex);
+          if (dist <= 3 || Math.random() < 0.35) {
+            output += scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+          } else {
+            output += targetText[i];
+          }
+        }
+        element.textContent = output;
+      }, 30);
+
+      // Auto-stop after 1.0 second max, even if mouse stays on the text
+      maxTimeout = setTimeout(function () {
+        stopAndResolve();
+      }, 850);
+    });
+
+    element.addEventListener('mousemove', function (e) {
+      if (!isScrambling) return;
+      const rect = element.getBoundingClientRect();
+      if (rect.width > 0) hoverRatio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    });
+
+    element.addEventListener('mouseleave', function () {
+      if (isScrambling) {
+        stopAndResolve();
+      }
+    });
+  }
+
+  function initUniversalTextScramble() {
+    const selectors = [
+      '.logo-title',
+      '.status-text',
+      '.hero-headline span',
+      '.hero-subtitle',
+      '.cta-title',
+      '.user-email',
+      '.footer-copyright',
+      '.footer-tagline',
+      '.loader-title',
+      '.loader-subtitle',
+      '.tutorial-headline',
+      '.tutorial-subtitle',
+      '.step-title',
+      '.app-title'
+    ];
+
+    selectors.forEach(function (sel) {
+      const elements = document.querySelectorAll(sel);
+      elements.forEach(function (el) {
+        attachCursorScramble(el);
+      });
+    });
+  }
+
+  /* --------------------------------------------------------------------------
+     3. Authentication & View State Logic (Google Log In -> Download -> Tutorial)
+     -------------------------------------------------------------------------- */
+  function resetScroll() {
+    const mainContainer = document.querySelector('.site-main');
+    if (mainContainer) mainContainer.scrollTop = 0;
+    if (tutorialView) tutorialView.scrollTop = 0;
+  }
+
   function showAuthView() {
     if (authView) authView.classList.remove('view-hidden');
     if (downloadView) downloadView.classList.add('view-hidden');
+    if (tutorialView) tutorialView.classList.add('view-hidden');
     if (userProfile) userProfile.classList.add('hidden');
     if (loginBtnText) loginBtnText.textContent = 'CONTINUE WITH GOOGLE';
+    resetScroll();
   }
 
   async function recordLoginLog(user) {
@@ -160,6 +327,7 @@
   function showDownloadView(user) {
     if (authView) authView.classList.add('view-hidden');
     if (downloadView) downloadView.classList.remove('view-hidden');
+    if (tutorialView) tutorialView.classList.add('view-hidden');
     if (userProfile) {
       userProfile.classList.remove('hidden');
       if (userEmailSpan) {
@@ -170,6 +338,15 @@
     if (user) {
       recordLoginLog(user);
     }
+    resetScroll();
+  }
+
+  function showTutorialView() {
+    if (authView) authView.classList.add('view-hidden');
+    if (downloadView) downloadView.classList.add('view-hidden');
+    if (tutorialView) tutorialView.classList.remove('view-hidden');
+    if (userProfile) userProfile.classList.remove('hidden');
+    resetScroll();
   }
 
   async function checkSession() {
@@ -206,33 +383,32 @@
 
   async function handleGoogleLogin() {
     if (loginBtnText) {
-      loginBtnText.textContent = 'CONNECTING GOOGLE...';
+      scrambleText(loginBtnText, 'CONNECTING TO GOOGLE...', 600);
     }
 
-    // Attempt Supabase Google OAuth
     if (supabaseClient) {
       try {
-        const { error } = await supabaseClient.auth.signInWithOAuth({
+        const { data, error } = await supabaseClient.auth.signInWithOAuth({
           provider: 'google',
           options: {
-            redirectTo: window.location.origin + window.location.pathname
+            redirectTo: window.location.origin
           }
         });
-        if (!error) return;
-        console.warn('OAuth fallback triggering:', error.message);
-      } catch (e) {
-        console.warn('OAuth attempt note:', e);
+        if (error) throw error;
+        return;
+      } catch (err) {
+        console.error('Supabase Google Auth Error:', err);
       }
     }
 
-    // Instant local/mock session fallback for development & immediate unlock
+    // Fallback if Supabase OAuth unavailable
+    const fallbackUser = { email: 'user@google.com', name: 'Google User' };
+    try {
+      localStorage.setItem('moodflix_auth_user', JSON.stringify(fallbackUser));
+    } catch (e) {}
     setTimeout(function () {
-      const mockUser = { email: 'user@google.com', name: 'Google User' };
-      try {
-        localStorage.setItem('moodflix_auth_user', JSON.stringify(mockUser));
-      } catch (e) {}
-      showDownloadView(mockUser);
-    }, 600);
+      showDownloadView(fallbackUser);
+    }, 400);
   }
 
   async function handleSignOut() {
@@ -247,13 +423,19 @@
     showAuthView();
   }
 
-  // Setup Auth Listeners
   if (googleLoginBtn) {
     googleLoginBtn.addEventListener('click', handleGoogleLogin);
   }
 
   if (signoutBtn) {
     signoutBtn.addEventListener('click', handleSignOut);
+  }
+
+  // Initialize Universal Text Scramble on all body text
+  if (document.readyState === 'complete') {
+    initUniversalTextScramble();
+  } else {
+    window.addEventListener('DOMContentLoaded', initUniversalTextScramble, { once: true, passive: true });
   }
 
   // Listen for Supabase auth changes
@@ -294,36 +476,121 @@
   }
 
   /* --------------------------------------------------------------------------
-     5. Download Button & Confetti Action
+     5. In-Page Retro Modal & Download Action
      -------------------------------------------------------------------------- */
+  function openGDriveModal() {
+    if (gdriveModal) {
+      gdriveModal.classList.remove('hidden');
+    }
+
+    // Reset iframe loader state
+    if (modalFrameLoader) {
+      modalFrameLoader.classList.remove('fade-out');
+    }
+
+    if (gdriveIframe) {
+      gdriveIframe.classList.add('iframe-loading');
+
+      let loaderTimeout = null;
+      function hideLoader() {
+        if (loaderTimeout) clearTimeout(loaderTimeout);
+        if (modalFrameLoader) modalFrameLoader.classList.add('fade-out');
+        if (gdriveIframe) gdriveIframe.classList.remove('iframe-loading');
+      }
+
+      gdriveIframe.onload = hideLoader;
+      // Fallback timer to reveal iframe if onload event is delayed
+      loaderTimeout = setTimeout(hideLoader, 2200);
+    }
+  }
+
+  function closeGDriveModalAndGoToTutorial() {
+    if (gdriveModal) {
+      gdriveModal.classList.add('hidden');
+    }
+    showTutorialView();
+  }
+
   if (downloadBtn) {
     downloadBtn.addEventListener('click', function () {
       if (downloadBtnText) {
-        downloadBtnText.textContent = 'OPENING GDRIVE...';
+        scrambleText(downloadBtnText, 'INITIATING DOWNLOAD...', 800);
       }
 
-      // Trigger Canvas Confetti if available
-      if (typeof confetti === 'function') {
-        try {
-          confetti({
-            particleCount: 45,
-            spread: 60,
-            origin: { y: 0.7 },
-            colors: ['#000000', '#555555', '#999999', '#ffffff']
-          });
-        } catch (e) {
-          // safe fallback
-        }
-      }
-
-      // Open target Google Drive URL
-      window.open(googleDriveDownloadUrl, '_blank', 'noopener,noreferrer');
-
+      // Open in-page retro modal popup inside same tab
       setTimeout(function () {
         if (downloadBtnText) {
           downloadBtnText.textContent = 'DOWNLOAD TORRENT';
         }
-      }, 1200);
+        openGDriveModal();
+      }, 500);
+    });
+  }
+
+  // Modal Action Event Listeners
+  if (closeModalBtn) closeModalBtn.addEventListener('click', closeGDriveModalAndGoToTutorial);
+  if (modalBackdrop) modalBackdrop.addEventListener('click', closeGDriveModalAndGoToTutorial);
+  if (proceedTutorialBtn) proceedTutorialBtn.addEventListener('click', closeGDriveModalAndGoToTutorial);
+
+  /* --------------------------------------------------------------------------
+     6. Watch Trailer Modal Popup (Leave No Trace Official Trailer)
+     -------------------------------------------------------------------------- */
+  const TRAILER_YOUTUBE_URL = "https://www.youtube.com/embed/of00RzVENT8?autoplay=1&controls=1&rel=0&modestbranding=1";
+
+  function openTrailerModal() {
+    if (trailerModal) {
+      if (trailerFrameLoader) {
+        trailerFrameLoader.classList.remove('fade-out');
+      }
+      if (trailerIframe) {
+        trailerIframe.classList.add('iframe-loading');
+        trailerIframe.src = TRAILER_YOUTUBE_URL;
+
+        let trailerLoaderTimeout = null;
+        function hideTrailerLoader() {
+          if (trailerLoaderTimeout) clearTimeout(trailerLoaderTimeout);
+          if (trailerFrameLoader) trailerFrameLoader.classList.add('fade-out');
+          if (trailerIframe) trailerIframe.classList.remove('iframe-loading');
+        }
+
+        trailerIframe.onload = hideTrailerLoader;
+        // Fallback timer to reveal iframe if onload event is delayed
+        trailerLoaderTimeout = setTimeout(hideTrailerLoader, 2000);
+      }
+      trailerModal.classList.remove('hidden');
+    }
+  }
+
+  function closeTrailerModal() {
+    if (trailerModal) {
+      trailerModal.classList.add('hidden');
+    }
+    if (trailerIframe) {
+      trailerIframe.src = "";
+    }
+  }
+
+  if (trailerBtn) {
+    trailerBtn.addEventListener('click', function () {
+      if (trailerBtnText) {
+        scrambleText(trailerBtnText, 'OPENING TRAILER...', 600);
+      }
+      setTimeout(function () {
+        if (trailerBtnText) {
+          trailerBtnText.textContent = 'WATCH TRAILER';
+        }
+        openTrailerModal();
+      }, 400);
+    });
+  }
+
+  if (closeTrailerModalBtn) closeTrailerModalBtn.addEventListener('click', closeTrailerModal);
+  if (trailerModalBackdrop) trailerModalBackdrop.addEventListener('click', closeTrailerModal);
+  if (closeTrailerBtnBottom) closeTrailerBtnBottom.addEventListener('click', closeTrailerModal);
+
+  if (backToDownloadBtn) {
+    backToDownloadBtn.addEventListener('click', function () {
+      showDownloadView();
     });
   }
 
