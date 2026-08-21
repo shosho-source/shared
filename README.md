@@ -1,4 +1,4 @@
-# REELDROP — Retro Modern Movie Archive
+# MOODFLIX — Retro Modern Movie Archive
 
 A lightweight, pure **Vanilla HTML, CSS, and JavaScript** web application for sharing movie files with an interactive WebGL fluid background simulation and retro 1-bit typography aesthetic.
 

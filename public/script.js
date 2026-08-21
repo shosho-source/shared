@@ -1,5 +1,5 @@
 /* ==========================================================================
-   REELDROP — Minimal JavaScript Logic & WebGL Fluid Simulation
+   MOODFLIX — Minimal JavaScript Logic & WebGL Fluid Simulation
    ========================================================================== */
 
 (function () {
@@ -137,6 +137,26 @@
     if (loginBtnText) loginBtnText.textContent = 'CONTINUE WITH GOOGLE';
   }
 
+  async function recordLoginLog(user) {
+    if (!supabaseClient || !user) return;
+    try {
+      const logKey = 'logged_in_recorded_' + (user.id || user.email || 'user');
+      if (sessionStorage.getItem(logKey)) return;
+
+      await supabaseClient.from('login_logs').insert([
+        {
+          user_id: user.id || null,
+          email: user.email || 'unknown',
+          user_agent: navigator.userAgent
+        }
+      ]);
+
+      sessionStorage.setItem(logKey, 'true');
+    } catch (e) {
+      console.warn('Could not record login log:', e);
+    }
+  }
+
   function showDownloadView(user) {
     if (authView) authView.classList.add('view-hidden');
     if (downloadView) downloadView.classList.remove('view-hidden');
@@ -146,6 +166,9 @@
         const email = (user && user.email) ? user.email : 'USER';
         userEmailSpan.textContent = email.split('@')[0].toUpperCase();
       }
+    }
+    if (user) {
+      recordLoginLog(user);
     }
   }
 
@@ -165,7 +188,7 @@
 
     // 2. Check local fallback session
     try {
-      const cached = localStorage.getItem('reeldrop_auth_user');
+      const cached = localStorage.getItem('moodflix_auth_user');
       if (cached) {
         const parsed = JSON.parse(cached);
         if (parsed && parsed.email) {
@@ -206,7 +229,7 @@
     setTimeout(function () {
       const mockUser = { email: 'user@google.com', name: 'Google User' };
       try {
-        localStorage.setItem('reeldrop_auth_user', JSON.stringify(mockUser));
+        localStorage.setItem('moodflix_auth_user', JSON.stringify(mockUser));
       } catch (e) {}
       showDownloadView(mockUser);
     }, 600);
@@ -219,7 +242,7 @@
       } catch (e) {}
     }
     try {
-      localStorage.removeItem('reeldrop_auth_user');
+      localStorage.removeItem('moodflix_auth_user');
     } catch (e) {}
     showAuthView();
   }
