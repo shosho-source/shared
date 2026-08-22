@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MOODFLIX — Retro Movie Share &amp; Torrent Archive</title>
   <meta name="description"
     content="Share movies. Not hassle. Download files directly with interactive WebGL fluid background.">
@@ -526,7 +526,7 @@
               <div class="modal-progress-fill"></div>
             </div>
           </div>
-          <iframe id="gdrive-iframe" src="https://drive.google.com/file/d/1Rm2fKtTlNSowmuR-RE6mkI9M5l3ZBF-P/preview"
+          <iframe id="gdrive-iframe" src=""
             class="gdrive-iframe iframe-loading" title="Google Drive File Preview"></iframe>
         </div>
 
@@ -601,9 +601,15 @@
   </div>
 
   <!-- Deferred Scripts: Supabase JS, Canvas Confetti, WebGL Fluid Simulation, and Main Logic -->
-  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/webgl-fluid-custom"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.112.3/dist/umd/supabase.min.js"
+    integrity="sha384-l8ah+VgaWtk1mvOe9VC+OirC6qHFF4yH7l7mKRidV9MSti3E9F463bMp6ZVN4kuC"
+    crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"
+    integrity="sha384-JSZXO0kKYHTylAsDYTb+7Kg2eUyalm19b8Pydcdf8sQ1cCKYZr9lLahoKT9+LFY5"
+    crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/webgl-fluid-custom@0.1.1"
+    integrity="sha384-jsKzsMPte6pJ/6HHe8JYohI/kfD8XSTgb14lncEEy/5PAdEw7KvGL7GUqluHpjA0"
+    crossorigin="anonymous"></script>
   <script defer src="script.js?v=2"></script>
 </body>
 

@@ -1,6 +1,22 @@
 const fs = require('fs');
 const path = require('path');
 
+// Sanitize values before injecting into JavaScript string literals
+// Prevents code injection if environment variables are compromised
+function sanitizeForJSString(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+    .replace(/'/g, "\\'")
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r')
+    .replace(/\u2028/g, '\\u2028')
+    .replace(/\u2029/g, '\\u2029')
+    .replace(/`/g, '\\`')
+    .replace(/\$/g, '\\$');
+}
+
 // 1. Create public directory
 fs.mkdirSync('public', { recursive: true });
 
@@ -13,7 +29,7 @@ if (fs.existsSync('images')) {
   fs.cpSync('images', path.join('public', 'images'), { recursive: true });
 }
 
-// 3. Process script.js to inject Environment Variables
+// 3. Process script.js to inject Environment Variables (with sanitization)
 if (fs.existsSync('script.js')) {
   let scriptContent = fs.readFileSync('script.js', 'utf8');
 
@@ -24,14 +40,14 @@ if (fs.existsSync('script.js')) {
   if (supabaseUrl) {
     scriptContent = scriptContent.replace(
       /const SUPABASE_URL = ".*";/,
-      `const SUPABASE_URL = "${supabaseUrl}";`
+      `const SUPABASE_URL = "${sanitizeForJSString(supabaseUrl)}";`
     );
   }
   
   if (supabaseKey) {
     scriptContent = scriptContent.replace(
       /const SUPABASE_KEY = ".*";/,
-      `const SUPABASE_KEY = "${supabaseKey}";`
+      `const SUPABASE_KEY = "${sanitizeForJSString(supabaseKey)}";`
     );
   }
 
@@ -39,3 +55,4 @@ if (fs.existsSync('script.js')) {
 }
 
 console.log('Static public directory created successfully with ENV variables injected!');
+
